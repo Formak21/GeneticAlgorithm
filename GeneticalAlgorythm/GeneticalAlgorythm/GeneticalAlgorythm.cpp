@@ -84,145 +84,166 @@ int main() {
 	//End of TestCode
 
 	//GeneticalAlgorithm
+	int cycles=0;
+	int LineSymb = 10;
 	vector<bool> FirstPop;
-	FirstPop = RandomMatrix(6, 4);
+	FirstPop = RandomMatrix(LineSymb, 4);
+	cout << "FirstPop:\n";
+	PrintMatrix(FirstPop, LineSymb);
+	cout << "\nEnd of FirstPop.\n";
 
 	while (true) {
+		cycles++;
 		vector<bool> BestLine1;
 		vector<bool> BestLine2;
 		int BestLine2NotDefault = -1;
-		int MaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, 6, 1)), max(FitStatus(GetLineFromMatrix(FirstPop, 6, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, 6, 3)), FitStatus(GetLineFromMatrix(FirstPop, 6, 4)))));
+		int MaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 1)), max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 3)), FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 4)))));
 		int SecondMaxFitStatus = -1;
 
-		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, 1))) {
-			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, 6, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, 6, 3)), FitStatus(GetLineFromMatrix(FirstPop, 6, 4))));
-			BestLine1 = GetLineFromMatrix(FirstPop, 6, 1);
+		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 1))) {
+			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 3)), FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 4))));
+			BestLine1 = GetLineFromMatrix(FirstPop, LineSymb, 1);
 			for (int i = 1; i <= 4; i++) {
 				if (i == 1) {
 					i++;
 				}
-				if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, i))) {
-					BestLine2 = GetLineFromMatrix(FirstPop, 6, i);
+				if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, i))) {
+					BestLine2 = GetLineFromMatrix(FirstPop, LineSymb, i);
 				}
 			}
 		}
 
-		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, 2))) {
+		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 2))) {
 			if (SecondMaxFitStatus != -1) {
-				BestLine1 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, 6, 2) : BestLine1;
+				BestLine1 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, LineSymb, 2) : BestLine1;
 			}
 			else {
-				BestLine1 = GetLineFromMatrix(FirstPop, 6, 2);
+				BestLine1 = GetLineFromMatrix(FirstPop, LineSymb, 2);
 			}
 
-			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, 6, 3)), max(FitStatus(GetLineFromMatrix(FirstPop, 6, 1)), FitStatus(GetLineFromMatrix(FirstPop, 6, 4))));
+			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 3)), max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 1)), FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 4))));
 
 			for (int i = 1; i <= 4; i++) {
 				if (i == 2) {
 					i++;
 				}
 				if (BestLine2NotDefault == -1) {
-					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, i))) {
-						BestLine2 = GetLineFromMatrix(FirstPop, 6, i);
+					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, i))) {
+						BestLine2 = GetLineFromMatrix(FirstPop, LineSymb, i);
 						BestLine2NotDefault = 0;
 					}
 				}
 				else {
-					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, i))) {
-						BestLine2 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, 6, i) : BestLine2;
+					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, i))) {
+						BestLine2 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, LineSymb, i) : BestLine2;
 					}
 				}
 			}
 		}
 
-		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, 3))) {
+		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 3))) {
 
 			if (SecondMaxFitStatus != -1) {
-				BestLine1 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, 6, 3) : BestLine1;
+				BestLine1 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, LineSymb, 3) : BestLine1;
 			}
 			else {
-				BestLine1 = GetLineFromMatrix(FirstPop, 6, 3);
+				BestLine1 = GetLineFromMatrix(FirstPop, LineSymb, 3);
 			}
 
-			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, 6, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, 6, 1)), FitStatus(GetLineFromMatrix(FirstPop, 6, 4))));
+			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 1)), FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 4))));
 
 			for (int i = 1; i <= 4; i++) {
 				if (i == 3) {
 					i++;
 				}
 				if (BestLine2NotDefault == -1) {
-					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, i))) {
-						BestLine2 = GetLineFromMatrix(FirstPop, 6, i);
+					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, i))) {
+						BestLine2 = GetLineFromMatrix(FirstPop, LineSymb, i);
 						BestLine2NotDefault = 0;
 					}
 				}
 				else {
-					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, i))) {
-						BestLine2 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, 6, i) : BestLine2;
+					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, i))) {
+						BestLine2 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, LineSymb, i) : BestLine2;
 					}
 				}
 			}
 		}
 
-		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, 4))) {
+		if (MaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 4))) {
 			if (SecondMaxFitStatus != -1) {
-				BestLine1 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, 6, 4) : BestLine1;
+				BestLine1 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, LineSymb, 4) : BestLine1;
 			}
 			else {
-				BestLine1 = GetLineFromMatrix(FirstPop, 6, 4);
+				BestLine1 = GetLineFromMatrix(FirstPop, LineSymb, 4);
 			}
 
-			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, 6, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, 6, 1)), FitStatus(GetLineFromMatrix(FirstPop, 6, 3))));
+			SecondMaxFitStatus = max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 2)), max(FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 1)), FitStatus(GetLineFromMatrix(FirstPop, LineSymb, 3))));
 
 			for (int i = 1; i <= 4; i++) {
 				if (i == 4) {
 					break;
 				}
 				if (BestLine2NotDefault == -1) {
-					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, i))) {
-						BestLine2 = GetLineFromMatrix(FirstPop, 6, i);
+					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, i))) {
+						BestLine2 = GetLineFromMatrix(FirstPop, LineSymb, i);
 						BestLine2NotDefault = 0;
 					}
 				}
 				else {
-					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, 6, i))) {
-						BestLine2 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, 6, i) : BestLine2;
+					if (SecondMaxFitStatus == FitStatus(GetLineFromMatrix(FirstPop, LineSymb, i))) {
+						BestLine2 = rand() % 2 == 0 ? GetLineFromMatrix(FirstPop, LineSymb, i) : BestLine2;
 					}
 				}
 			}
 		}
+		cout << "BestLine1:\n";
+		PrintMatrix(BestLine1, LineSymb);
+		cout << "\nBestLine2:\n";
+		PrintMatrix(BestLine2, LineSymb);
+		cout << "\nEnd of the BestLines\n";
+
 		vector<bool> temp1;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < (LineSymb/2); i++) {
 			temp1.push_back(BestLine1[i]);
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < (LineSymb / 2); i++) {
 			BestLine1[i] = BestLine2[i];
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < (LineSymb / 2); i++) {
 			BestLine2[i] = temp1[i];
 		}
 		rand() % 2 == 0 ? BestLine1 = MutationProc(BestLine1) : BestLine2 = MutationProc(BestLine2);
+
+		cout << "BestLine1 Mutated:\n";
+		PrintMatrix(BestLine1, LineSymb);
+		cout << "\nBestLine2 Mutated:\n";
+		PrintMatrix(BestLine2, LineSymb);
+		cout << "\nEnd of the BestLines Mutated\n";
+
 		int TrueCounter1 = 0;
 		int TrueCounter2 = 0;
-		for (int i = 0; i < 6; i++) {
-			if (BestLine1[i] = true) {
+		for (int i = 0; i < LineSymb; i++) {
+			if (BestLine1[i] == true) {
 				TrueCounter1++;
 			}
-			if (BestLine2[i] = true) {
+			if (BestLine2[i] == true) {
 				TrueCounter2++;
 			}
 		}
-		if (TrueCounter1 == 6 || TrueCounter2 == 6) {
-			PrintMatrix(BestLine1, 6);
-			cout << "\n";
-			PrintMatrix(BestLine2, 6);
-			cout << "\n";
+		if (TrueCounter1 == LineSymb || TrueCounter2 == LineSymb) {
+			cout << "BestLine1 ClearEdition:\n";
+			PrintMatrix(BestLine1, LineSymb);
+			cout << "\nBestLine2 ClearEdition:\n";
+			PrintMatrix(BestLine2, LineSymb);
+			cout << "\nCycles: " << cycles << endl;
+			cout << "\nEnd of the BestLines ClearEdition\n";
 			system("pause");
 		}
 		TrueCounter1 = 0;
 		TrueCounter2 = 0;
 		FirstPop.clear();
-		FirstPop = RandomMatrix(6, 2);
+		FirstPop = RandomMatrix(LineSymb, 2);
 		for (int i = 0; i < 6; i++) {
 			FirstPop.push_back(BestLine1[i]);
 		}
