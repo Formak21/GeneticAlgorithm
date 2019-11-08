@@ -239,6 +239,7 @@ int main() {
 			cout << "\nCycles: " << cycles << endl;
 			cout << "\nEnd of the BestLines ClearEdition\n";
 			system("pause");
+			break;
 		}
 		TrueCounter1 = 0;
 		TrueCounter2 = 0;
@@ -252,6 +253,5 @@ int main() {
 		}
 		
 	}
-	system("pause");
 	return 0;
 }
