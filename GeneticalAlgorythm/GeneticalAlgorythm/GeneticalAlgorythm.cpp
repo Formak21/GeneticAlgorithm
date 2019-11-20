@@ -44,17 +44,28 @@ vector<bool> GetLineFromMatrix(vector<bool> matrix, int lineSym, int LineNum) {
 	return temp;
 }
 //Random Mutation of line
-vector<bool> MutationProc(vector<bool> temp) {
-	int BreakMoment = rand() % 2;
-	while (true) {
-		if (BreakMoment == 1) {
-			break;
-	}
-	int RandomElement = rand() % (temp.size()-1);
-	temp[RandomElement] = rand() % 2 == 1 ? true : false;
-	BreakMoment = rand() % 2;
-	}
+vector<bool> MutationProc(vector<bool> temp, int Prob) {
+	//old code
+	//int BreakMoment = rand() % 2;
+	//while (true) {
+	//	if (BreakMoment == 1) {
+	//		break;
+	//	}
+	//	int RandomElement = rand() % (temp.size()-1);
+	//	temp[RandomElement] = rand() % 2 == 1 ? true : false;
+	//	BreakMoment = rand() % 2;
+	//}
+	//return temp;
+
+	for (int i = 0; i < temp.size(); i++) {
+		int RandPerc = rand() % 101;
+		if (RandPerc >= Prob) {
+			temp[i] == true ? temp[i] = false : temp[i] = true;
+		}
 	return temp;
+}
+
+
 }
 //Fit Status with best matrix-line(11111.. and etc.)
 int FitStatus(vector<bool> Line) {
@@ -70,29 +81,18 @@ int FitStatus(vector<bool> Line) {
 int main() {
 	//VERY IMPORTANT LINE, IT IS NECESSARY FOR THE RAND() FUNCTION TO WORK CORRECTLY.
 	srand(time(0));
-	
-
-	//TestCode, no needed, delete if u want.
-	//vector<bool> test;
-	//int LineSym, ColumnSym, LineNum;
-	//cin >> LineSym >> ColumnSym;
-	//test = RandomMatrix(LineSym, ColumnSym);
-	//PrintMatrix(test, LineSym);
-	//cout << "\n";
-	//cin >> LineNum;
-	//PrintMatrix(MutationProc(GetLineFromMatrix(test, LineSym, LineNum)), LineSym);
-	//End of TestCode
 
 	//GeneticalAlgorithm
+	int MutationProb = 5;
 	int cycles=0;
 	int LineSymb = 10;
 	vector<bool> FirstPop;
 	FirstPop = RandomMatrix(LineSymb, 4);
-	cout << "FirstPop:\n";
-	PrintMatrix(FirstPop, LineSymb);
-	cout << "\nEnd of FirstPop.\n";
 
 	while (true) {
+		cout << "FirstPop:\n";
+		PrintMatrix(FirstPop, LineSymb);
+		cout << "\nEnd of FirstPop.\n";
 		cycles++;
 		vector<bool> BestLine1;
 		vector<bool> BestLine2;
@@ -213,7 +213,7 @@ int main() {
 		for (int i = 0; i < (LineSymb / 2); i++) {
 			BestLine2[i] = temp1[i];
 		}
-		rand() % 2 == 0 ? BestLine1 = MutationProc(BestLine1) : BestLine2 = MutationProc(BestLine2);
+		rand() % 2 == 0 ? BestLine1 = MutationProc(BestLine1, MutationProb) : BestLine2 = MutationProc(BestLine2, MutationProb);
 
 		cout << "BestLine1 Mutated:\n";
 		PrintMatrix(BestLine1, LineSymb);
@@ -245,13 +245,14 @@ int main() {
 		TrueCounter2 = 0;
 		FirstPop.clear();
 		FirstPop = RandomMatrix(LineSymb, 2);
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < LineSymb; i++) {
 			FirstPop.push_back(BestLine1[i]);
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < LineSymb; i++) {
 			FirstPop.push_back(BestLine2[i]);
 		}
-		
+		BestLine1.clear();
+		BestLine2.clear();
 	}
 	return 0;
 }
