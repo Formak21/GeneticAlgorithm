@@ -1,4 +1,3 @@
 ﻿  GeneticalAlgorythm.cpp
-C:\Users\Formak21\Desktop\GeneticAlgorithm-master\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(226,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Formak21\Desktop\GeneticAlgorithm-master\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(69): warning C4715: 'MutationProc': not all control paths return a value
-  GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\Desktop\GeneticAlgorithm-master\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe
+C:\Users\Formak21\Desktop\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(340,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\Desktop\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe
