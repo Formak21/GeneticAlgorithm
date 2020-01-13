@@ -256,6 +256,85 @@ void GeneticalAlgorithm(int LineSymb, int MutationProb, int cycle, int cyclevari
 	}
 }
 
+class GeneticIndiv {
+public:
+	std::vector<bool>indiv;
+	int FitNum=0;
+	int MutProb;
+	GeneticIndiv(int LineSym, int Prob) {
+		indiv = RandomMatrix(LineSym, 1);
+		MutProb = Prob;
+		FitNumber();
+		Lenght();
+
+	}
+	int FitNumber() {
+		FitNum=0;
+		for (int i = 0; i < indiv.size(); i++) {
+			if (indiv[i] == true) {
+				FitNum++;
+			}
+
+		}
+		return FitNum;
+	}
+	size_t Lenght() {
+		//GUARD
+		if (indiv.size() % 2 != 0) {
+			if (rand() % 2 == 0) {
+				indiv.push_back(false);
+			}
+			else {
+				indiv.push_back(true);
+			}
+			FitNumber();
+		}
+		return indiv.size();
+	}
+	bool FitStatus(){
+		FitNumber();
+		if (indiv.size() == FitNum) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	void Mutation() {
+		for (int i = 0; i < indiv.size(); i++) {
+			int RandPerc = (rand() % 101) + 1;
+			if (RandPerc <= MutProb) {
+				indiv[i] == true ? indiv[i] = false : indiv[i] = true;
+			}
+		}
+		FitNumber();
+	}
+	void indivUpdate(std::vector<bool>UpdateVec) {
+		indiv.clear();
+		indiv.reserve(UpdateVec.size());
+		indiv = UpdateVec;
+		Lenght();
+		FitNumber();
+	}
+	std::vector<bool>indivHalf(std::vector<bool> Half = {}) {
+		std::vector<bool> OldHalf;
+		for (int i = Lenght()/2-1; i < Lenght(); i++ ){
+			OldHalf.push_back(indiv[i]);
+			if (Half.empty() == false) {
+				indiv[i] = Half[i - (Lenght() / 2 - 1)];
+			}
+		}
+		return OldHalf;
+	}
+};
+
+
+
+
+
+
+
 int main() {
 	//VERY IMPORTANT LINE, IT IS NECESSARY FOR THE RAND() FUNCTION TO WORK CORRECTLY.
 	srand(time(0));
