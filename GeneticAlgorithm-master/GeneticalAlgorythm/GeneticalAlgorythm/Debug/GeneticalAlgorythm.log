@@ -1,0 +1,6 @@
+﻿  GeneticalAlgorythm.cpp
+C:\Users\Formak21\source\repos\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(19,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Formak21\source\repos\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(33,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Formak21\source\repos\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(62,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Formak21\source\repos\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(72,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\source\repos\GeneticalAlgorythm\Debug\GeneticalAlgorythm.exe
