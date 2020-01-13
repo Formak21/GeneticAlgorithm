@@ -1,4 +1,4 @@
-# GeneticAlgorithm(Gamma v1.00)
+# GeneticAlgorithm(v1.1.0)
 This algorithm is writed on c++, with using one-dimensional matrix vectors.
 
 - Genetical Algorithm? What is this?
@@ -9,5 +9,5 @@ Yes, I know about a grammatical error in the name of the project.
 Works only on Windows 10 and Visual Studio 2019.
 
 Last Update:
-Rewrited 90% old code, fixed errors and bugs, added menu, 1.00 gamma release.
-:)
+Added math graphic class, deleted old code, comments not fixed:), bugfixes, 
+version 1.1.0.
