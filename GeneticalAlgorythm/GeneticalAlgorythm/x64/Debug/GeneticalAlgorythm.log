@@ -1,3 +1,6 @@
 ﻿  GeneticalAlgorythm.cpp
-C:\Users\admin\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(261,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  GeneticalAlgorythm.vcxproj -> C:\Users\admin\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe
+C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(323,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(374,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(376,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(395,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe

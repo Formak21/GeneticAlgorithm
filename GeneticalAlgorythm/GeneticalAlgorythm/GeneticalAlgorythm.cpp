@@ -183,6 +183,7 @@ void GeneticalAlgorithm(int LineSymb, int MutationProb, int cycle, int cyclevari
 	int temp = cycle;
 	int FindCounter = 0;
 	cycle = 0;
+
 	std::vector<bool> FirstPop = RandomMatrix(LineSymb, 4);
 	std::vector<bool> BestLine1 = BestLineSearch(FirstPop, LineSymb);
 	std::vector<bool> BestLine2 = BestLineSearch(FirstPop, LineSymb, BestLine1);
@@ -328,7 +329,61 @@ public:
 		return OldHalf;
 	}
 };
+class GeneticAlg {
+public:
+	std::vector<GeneticIndiv> Population;
+	int IndivLenght;
+	int IndivNum;
+	int MutationProb;
+	GeneticAlg(int LineSymb, int indivNum, int MutatProb ) {
+		IndivLenght = LineSymb;
+		IndivNum = indivNum;
+		MutationProb = MutatProb;
+		Guard(true);
+		for (int i = 0; i < IndivNum; i++) {
+			GeneticIndiv Temp(IndivLenght, MutationProb);
+			Population.push_back(Temp);
 
+		}
+		Guard();
+	}
+	void Guard(bool param = false) {
+		if (param == false) {
+			DataUpdate();
+		}
+		if (IndivLenght % 2 != 0) {
+			IndivLenght++;
+			if (param == false) {
+				GeneticIndiv Temp(IndivLenght, MutationProb);
+				Population.push_back(Temp);
+			}
+		}
+		if (IndivNum % 2 != 0) {
+			if (param == false) {
+				for (int i = 0; i < IndivNum; i++) {
+					Population[i].Lenght();
+				}
+			}
+			IndivNum++;
+		}
+		if (param == false) {
+			DataUpdate();
+		}
+	}
+	void DataUpdate() {
+		IndivNum = Population.size();
+		for (int i = 0; i < IndivNum; i++) {
+			IndivNum = Population[i].Lenght();
+		}
+		for (int i = 0; i < IndivNum; i++) {
+			if (Population[i].Lenght() != IndivLenght) {
+				Population[i].indivUpdate(RandomMatrix(IndivLenght, 1));
+				DataUpdate();
+			}
+		}
+	}
+
+};
 
 
 
@@ -351,7 +406,6 @@ int main() {
 	std::vector<bool> FirstPop = RandomMatrix(LineSymb, 4);
 	std::vector<bool> BestLine1 = BestLineSearch(FirstPop, LineSymb);
 	std::vector<bool> BestLine2 = BestLineSearch(FirstPop, LineSymb, BestLine1);
-
 
 	while (true) {
 		std::cout << "\nFormak21 2020 " << version << "\n" << "\n" << "\n"
