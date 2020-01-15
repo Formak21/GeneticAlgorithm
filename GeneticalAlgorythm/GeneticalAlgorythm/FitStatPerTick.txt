@@ -2411,4 +2411,4 @@
 (437, 6)
 (438, 7)
 (439, 6)
-(
+(#G.A. 1.1.0 GRAPH STARTED Time: 08:01:03 Date: 01/15/20 FitStatPerTick.txt#

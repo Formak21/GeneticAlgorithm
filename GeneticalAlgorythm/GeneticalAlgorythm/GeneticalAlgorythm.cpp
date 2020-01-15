@@ -335,6 +335,7 @@ public:
 	int IndivLenght;
 	int IndivNum;
 	int MutationProb;
+	int cycles=1;
 	GeneticAlg(int LineSymb, int indivNum, int MutatProb ) {
 		IndivLenght = LineSymb;
 		IndivNum = indivNum;
@@ -373,7 +374,9 @@ public:
 	void DataUpdate() {
 		IndivNum = Population.size();
 		for (int i = 0; i < IndivNum; i++) {
-			IndivNum = Population[i].Lenght();
+			if (IndivNum < Population[i].Lenght()) {
+				IndivNum = Population[i].Lenght();
+			}
 		}
 		for (int i = 0; i < IndivNum; i++) {
 			if (Population[i].Lenght() != IndivLenght) {
@@ -382,6 +385,21 @@ public:
 			}
 		}
 	}
+	void addData(int type=0) {
+		Guard();
+		if (type == 0) {
+			int centr;
+			for (int i = 0; i < IndivNum; i++) {
+				centr += Population[i].FitNumber();
+			}
+			//CHECK THIS LINE.
+			centr = centr / IndivNum;
+
+			FitStatPerTick.addData(cycles, centr);
+		}
+	
+	}
+
 
 };
 
