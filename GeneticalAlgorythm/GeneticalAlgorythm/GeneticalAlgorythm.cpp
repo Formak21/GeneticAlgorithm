@@ -4,10 +4,10 @@
 #include <algorithm>
 #include <ctime>
 #include <fstream>
-#include <thread>
+#include <map>
 #include <time.h>
-
-const std::string version = "1.1.0";
+#include <functional>
+const std::string version = "1.1.0B";
 
 class Graph {
 private:
@@ -30,7 +30,7 @@ public:
 	void funcinit(std::string funcname) {
 		output << "\n#" << funcname << "#\n";
 	}
-	void addData(int x, int y) {
+	void addData(size_t x, size_t y) {
 		output << "(" << x << ", " << y << ")\n";
 
 	}
@@ -260,18 +260,20 @@ void GeneticalAlgorithm(int LineSymb, int MutationProb, int cycle, int cyclevari
 class GeneticIndiv {
 public:
 	std::vector<bool>indiv;
-	int FitNum=0;
-	int MutProb;
-	GeneticIndiv(int LineSym, int Prob) {
-		indiv = RandomMatrix(LineSym, 1);
+	size_t FitNum=0;
+	size_t MutProb;
+	size_t indivLen;
+	GeneticIndiv(size_t LineSym, size_t Prob) {
+		indivLen = LineSym;
+		indiv = RandMatrix(indivLen);
 		MutProb = Prob;
 		FitNumber();
 		Lenght();
 
 	}
-	int FitNumber() {
+	size_t FitNumber() {
 		FitNum=0;
-		for (int i = 0; i < indiv.size(); i++) {
+		for (size_t i = 0; i < indiv.size(); i++) {
 			if (indiv[i] == true) {
 				FitNum++;
 			}
@@ -303,8 +305,8 @@ public:
 		}
 	}
 	void Mutation() {
-		for (int i = 0; i < indiv.size(); i++) {
-			int RandPerc = (rand() % 101) + 1;
+		for (size_t i = 0; i < indiv.size(); i++) {
+			size_t RandPerc = size_t((rand() % 101)) + 1;
 			if (RandPerc <= MutProb) {
 				indiv[i] == true ? indiv[i] = false : indiv[i] = true;
 			}
@@ -320,7 +322,7 @@ public:
 	}
 	std::vector<bool>indivHalf(std::vector<bool> Half = {}) {
 		std::vector<bool> OldHalf;
-		for (int i = Lenght()/2-1; i < Lenght(); i++ ){
+		for (size_t i = Lenght()/2-1; i < Lenght(); i++ ){
 			OldHalf.push_back(indiv[i]);
 			if (Half.empty() == false) {
 				indiv[i] = Half[i - (Lenght() / 2 - 1)];
@@ -328,25 +330,38 @@ public:
 		}
 		return OldHalf;
 	}
+	std::vector<bool> RandMatrix(size_t Len) {
+		std::vector<bool> temp;
+		for (size_t i = 0; i < Len; i++) {
+			temp.push_back(rand() % 2 == 1 ? true : false);
+		}
+		return temp;
+	}
+	std::vector<bool> RandMatrix() {
+		return RandMatrix(Lenght());
+	}
 };
 class GeneticAlg {
 public:
 	std::vector<GeneticIndiv> Population;
-	int IndivLenght;
-	int IndivNum;
-	int MutationProb;
-	int cycles=1;
-	GeneticAlg(int LineSymb, int indivNum, int MutatProb ) {
+	size_t IndivLenght;
+	size_t IndivNum;
+	size_t MutationProb;
+	size_t BestCount;
+	size_t cycles = 1;
+	std::vector<size_t> BestID;
+	GeneticAlg(size_t LineSymb, size_t indivNum, size_t MutatProb, size_t BC = 2) {
 		IndivLenght = LineSymb;
 		IndivNum = indivNum;
 		MutationProb = MutatProb;
+		BestCount = BC;
 		Guard(true);
-		for (int i = 0; i < IndivNum; i++) {
+		for (size_t i = 0; i < IndivNum; i++) {
 			GeneticIndiv Temp(IndivLenght, MutationProb);
 			Population.push_back(Temp);
 
 		}
-		Guard();
+		BetterLinesFind();
 	}
 	void Guard(bool param = false) {
 		if (param == false) {
@@ -361,46 +376,103 @@ public:
 		}
 		if (IndivNum % 2 != 0) {
 			if (param == false) {
-				for (int i = 0; i < IndivNum; i++) {
+				for (size_t i = 0; i < IndivNum; i++) {
 					Population[i].Lenght();
 				}
 			}
 			IndivNum++;
 		}
+
 		if (param == false) {
 			DataUpdate();
 		}
 	}
 	void DataUpdate() {
 		IndivNum = Population.size();
-		for (int i = 0; i < IndivNum; i++) {
-			if (IndivNum < Population[i].Lenght()) {
-				IndivNum = Population[i].Lenght();
+		for (size_t i = 0; i < IndivNum; i++) {
+			if (IndivLenght < Population[i].Lenght()) {
+				IndivLenght = Population[i].Lenght();
 			}
-		}
-		for (int i = 0; i < IndivNum; i++) {
 			if (Population[i].Lenght() != IndivLenght) {
-				Population[i].indivUpdate(RandomMatrix(IndivLenght, 1));
+				Population[i].indivUpdate(Population[i].RandMatrix(IndivLenght));
 				DataUpdate();
 			}
+			if (Population[i].MutProb != MutationProb) {
+				MutatProbEdit(MutationProb);
+			}
 		}
 	}
-	void addData(int type=0) {
+	void addData(size_t type = 0) {
 		Guard();
 		if (type == 0) {
-			int centr;
-			for (int i = 0; i < IndivNum; i++) {
+			size_t centr = 0;
+			for (size_t i = 0; i < IndivNum; i++) {
 				centr += Population[i].FitNumber();
 			}
-			//CHECK THIS LINE.
 			centr = centr / IndivNum;
-
 			FitStatPerTick.addData(cycles, centr);
 		}
-	
+		if (type == 1) {
+			size_t temp = 0;
+			for (size_t i = 0; i < BestID.size(); i++) {
+				if (Population[BestID[i]].FitNumber() > temp) {
+					temp = Population[BestID[i]].FitNumber();
+				}
+			}
+			BestLinePerTick.addData(cycles, temp);
+		}
+
+	}
+	void BetterLinesFind(size_t BestCounter) {
+		Guard();
+		BestID.clear();
+		std::multimap<int, size_t, std::greater<int>> FitNumb;
+		std::vector<int> temp(IndivNum, 0);
+		for (size_t i = 0; i < IndivNum; i++) {
+			temp[i] = Population[i].FitNumber();
+			if (i != 0) {
+				for (size_t xx = 0; xx < temp.size(); xx++) {
+
+					if (i == xx) {
+						continue;
+					}
+					if (temp[i] == temp[xx]) {
+						temp[i]--;
+						xx = 0;
+					}
+				}
+			}
+			FitNumb[temp[i]] = i;
+		}
+		size_t i = 0;
+		for (auto id : FitNumb) {
+			if (i >= BestCount) {
+				break;
+			}
+			BestID.push_back(id.second);
+			i++;
+
+		}
+
 	}
 
-
+	void BetterLinesFind() {
+		BetterLinesFind(BestCount);
+	}
+	void seleIndiv(size_t id1, size_t id2){
+		std::vector<bool> temp = Population[id1].indivHalf(Population[id2].indivHalf());
+		Population[id2].indivHalf(temp);
+	}
+	void MutatInit(size_t id1, size_t id2) {
+		DataUpdate();
+		rand() % 2 == 0 ? Population[id1].Mutation() : Population[id2].Mutation();
+	}
+	void MutatProbEdit(size_t NewMutatProb) {
+		for (size_t i=0; i < Population.size(); i++) {
+			Population[i].MutProb = NewMutatProb;
+		}
+		MutationProb = NewMutatProb;
+	}
 };
 
 
@@ -418,7 +490,7 @@ int main() {
 	the Answer-Lines(cout), either without a description or have grammatical errors, 
 	this will be fixed in the next version.*/
 	
-
+	/*
 	int MutationProb = 5;
 	int LineSymb = 10;
 	std::vector<bool> FirstPop = RandomMatrix(LineSymb, 4);
@@ -587,5 +659,24 @@ int main() {
 		}
 		else { continue; }
 	}
+
+	*/
+
+	GeneticAlg Test(10, 4, 5, 4);
+	for (size_t i = 0; i < 4; i++) {
+		Test.Population[i].indiv = IdealLine(10);
+		PrintMatrix(Test.Population[i].indiv, Test.IndivLenght);
+		std::cout << "\n";
+	}
+	std::cout << "BestLines:";
+	std::cout << "\n";
+	PrintMatrix(Test.Population[Test.BestID[0]].indiv, Test.IndivLenght);
+	std::cout << "\n";
+	PrintMatrix(Test.Population[Test.BestID[1]].indiv, Test.IndivLenght);
+	std::cout << "\n";
+	PrintMatrix(Test.Population[Test.BestID[2]].indiv, Test.IndivLenght);
+	std::cout << "\n" << Test.BestID.size();
+	PrintMatrix(Test.Population[Test.BestID[3]].indiv, Test.IndivLenght);
+	
 	return 0;
 }
