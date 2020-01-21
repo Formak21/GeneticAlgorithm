@@ -7,6 +7,7 @@
 #include <map>
 #include <time.h>
 #include <functional>
+#include <utility>
 const std::string version = "1.1.0B";
 
 class Graph {
@@ -294,16 +295,6 @@ public:
 		}
 		return indiv.size();
 	}
-	bool FitStatus(){
-		FitNumber();
-		if (indiv.size() == FitNum) {
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 	void Mutation() {
 		for (size_t i = 0; i < indiv.size(); i++) {
 			size_t RandPerc = size_t((rand() % 101)) + 1;
@@ -320,15 +311,18 @@ public:
 		Lenght();
 		FitNumber();
 	}
-	std::vector<bool>indivHalf(std::vector<bool> Half = {}) {
+	std::vector<bool>indivHalf(std::vector<bool> Half, size_t symb) {
 		std::vector<bool> OldHalf;
-		for (size_t i = Lenght()/2-1; i < Lenght(); i++ ){
+		for (size_t i = symb; i < Lenght(); i++ ){
 			OldHalf.push_back(indiv[i]);
 			if (Half.empty() == false) {
-				indiv[i] = Half[i - (Lenght() / 2 - 1)];
+				indiv[i] = Half[i - (symb)];
 			}
 		}
 		return OldHalf;
+	}
+	std::vector<bool>indivHalf() {
+		return indivHalf({}, Lenght() / 2 - 1);
 	}
 	std::vector<bool> RandMatrix(size_t Len) {
 		std::vector<bool> temp;
@@ -340,6 +334,17 @@ public:
 	std::vector<bool> RandMatrix() {
 		return RandMatrix(Lenght());
 	}
+	void PrintLine() {
+		int SymbolCounter = 0;
+		for (int i = 0; i < Lenght(); i++) {
+			if (SymbolCounter == Lenght()) {
+				std::cout << "\n";
+				SymbolCounter = 0;
+			}
+			SymbolCounter++;
+			indiv[i] == true ? std::cout << "1" : std::cout << "0";
+		}
+	}
 };
 class GeneticAlg {
 public:
@@ -348,7 +353,7 @@ public:
 	size_t IndivNum;
 	size_t MutationProb;
 	size_t BestCount;
-	size_t cycles = 1;
+	size_t BestFitStatus=0;
 	std::vector<size_t> BestID;
 	GeneticAlg(size_t LineSymb, size_t indivNum, size_t MutatProb, size_t BC = 2) {
 		IndivLenght = LineSymb;
@@ -361,22 +366,22 @@ public:
 			Population.push_back(Temp);
 
 		}
-		BetterLinesFind();
+		Selection();
 	}
 	void Guard(bool param = false) {
 		if (param == false) {
 			DataUpdate();
 		}
-		if (IndivLenght % 2 != 0) {
+		if (IndivNum % 2 != 0) {
 			IndivLenght++;
 			if (param == false) {
 				GeneticIndiv Temp(IndivLenght, MutationProb);
 				Population.push_back(Temp);
 			}
 		}
-		if (IndivNum % 2 != 0) {
+		if (IndivLenght % 2 != 0) {
 			if (param == false) {
-				for (size_t i = 0; i < IndivNum; i++) {
+				for (size_t i = 0; i < IndivLenght; i++) {
 					Population[i].Lenght();
 				}
 			}
@@ -402,7 +407,7 @@ public:
 			}
 		}
 	}
-	void addData(size_t type = 0) {
+	void addData(size_t type = 0, size_t cycles = 1) {
 		Guard();
 		if (type == 0) {
 			size_t centr = 0;
@@ -423,45 +428,29 @@ public:
 		}
 
 	}
-	void BetterLinesFind(size_t BestCounter) {
+	size_t Selection() {
 		Guard();
 		BestID.clear();
-		std::multimap<int, size_t, std::greater<int>> FitNumb;
-		std::vector<int> temp(IndivNum, 0);
-		for (size_t i = 0; i < IndivNum; i++) {
-			temp[i] = Population[i].FitNumber();
-			if (i != 0) {
-				for (size_t xx = 0; xx < temp.size(); xx++) {
-
-					if (i == xx) {
-						continue;
-					}
-					if (temp[i] == temp[xx]) {
-						temp[i]--;
-						xx = 0;
-					}
-				}
-			}
-			FitNumb[temp[i]] = i;
+		std::vector<size_t> temp = { rand() % IndivNum, rand() % IndivNum };
+		if (Population[temp[0]].FitNumber() > Population[temp[1]].FitNumber()) {
+			BestID.push_back(temp[0]);
+			return temp[0];
 		}
-		size_t i = 0;
-		for (auto id : FitNumb) {
-			if (i >= BestCount) {
-				break;
-			}
-			BestID.push_back(id.second);
-			i++;
-
+		else if (Population[temp[0]].FitNumber() < Population[temp[1]].FitNumber()) {
+			BestID.push_back(temp[1]);
+			return temp[1];
 		}
-
+		else {
+			short int tempp = rand() % 2;
+			BestID.push_back(temp[tempp]);
+			return temp[tempp];
+		}
 	}
 
-	void BetterLinesFind() {
-		BetterLinesFind(BestCount);
-	}
-	void seleIndiv(size_t id1, size_t id2){
-		std::vector<bool> temp = Population[id1].indivHalf(Population[id2].indivHalf());
-		Population[id2].indivHalf(temp);
+	void crossIndiv(size_t id1, size_t id2){
+		int crossLenght = rand() % IndivLenght;
+		std::vector<bool> temp = Population[id1].indivHalf(Population[id2].indivHalf({}, crossLenght), crossLenght);
+		Population[id2].indivHalf(temp, crossLenght);
 	}
 	void MutatInit(size_t id1, size_t id2) {
 		DataUpdate();
@@ -473,9 +462,54 @@ public:
 		}
 		MutationProb = NewMutatProb;
 	}
+	void regenIndiv() {
+		for (size_t i = 0; i < IndivNum; i++) {
+			for (size_t x = 0; x < BestID.size(); i++) {
+				if (i == BestID[x] && i < IndivNum-1) {
+					i++;
+				}
+				else if (i == BestID[x] && i == IndivNum - 1) {
+					return;
+				}
+			}
+			Population[i].RandMatrix();
+		}
+		Guard();
+	}
+	void IndivReset() {
+		BestFitStatus = 0;
+		for (size_t i = 0; i < IndivNum; i++) {
+			Population[i].RandMatrix();
+		}
+		Guard();
+	}
+	void FulCycl() {
+		Guard();
+		Selection();
+		crossIndiv(BestID[0], BestID[1]);
+		MutatInit(BestID[0], BestID[1]);
+		BestFit();
+		regenIndiv();
+	}
+	size_t BestFit() {
+		Guard();
+		for (size_t i=0; i < IndivNum; i++) {
+			if (BestFitStatus > Population[i].FitNumber()) {
+				BestFitStatus = Population[i].FitNumber();
+			}
+		}
+		return BestFitStatus;
+	}
 };
+void GenAlgProc(size_t IndivNum, size_t IndivLenght, size_t MutationProb, int cycle, int cyclevariant) {
+	int temp = cycle;
+	cycle = 0;
+	GeneticAlg Temp(size_t IndivLenght, size_t IndivNum, size_t MutationProb);
+	//while (true) {
+	//	Temp.FitCycl();
+	//}
 
-
+}
 
 
 
@@ -490,7 +524,7 @@ int main() {
 	the Answer-Lines(cout), either without a description or have grammatical errors, 
 	this will be fixed in the next version.*/
 	
-	/*
+	
 	int MutationProb = 5;
 	int LineSymb = 10;
 	std::vector<bool> FirstPop = RandomMatrix(LineSymb, 4);
@@ -660,23 +694,7 @@ int main() {
 		else { continue; }
 	}
 
-	*/
-
-	GeneticAlg Test(10, 4, 5, 4);
-	for (size_t i = 0; i < 4; i++) {
-		Test.Population[i].indiv = IdealLine(10);
-		PrintMatrix(Test.Population[i].indiv, Test.IndivLenght);
-		std::cout << "\n";
-	}
-	std::cout << "BestLines:";
-	std::cout << "\n";
-	PrintMatrix(Test.Population[Test.BestID[0]].indiv, Test.IndivLenght);
-	std::cout << "\n";
-	PrintMatrix(Test.Population[Test.BestID[1]].indiv, Test.IndivLenght);
-	std::cout << "\n";
-	PrintMatrix(Test.Population[Test.BestID[2]].indiv, Test.IndivLenght);
-	std::cout << "\n" << Test.BestID.size();
-	PrintMatrix(Test.Population[Test.BestID[3]].indiv, Test.IndivLenght);
 	
+
 	return 0;
 }

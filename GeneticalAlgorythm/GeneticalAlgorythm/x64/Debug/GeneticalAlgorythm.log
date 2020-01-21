@@ -1,18 +1,4 @@
 ﻿  GeneticalAlgorythm.cpp
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(432,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(432,1): warning C4267:         with
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(432,1): warning C4267:         [
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(432,1): warning C4267:             _Ty=int
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(432,1): warning C4267:         ]
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(445,19): error C2676: binary '[': 'std::multimap<int,size_t,std::greater<int>,std::allocator<std::pair<const _Kty,_Ty>>>' does not define this operator or a conversion to a type acceptable to the predefined operator
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(445,19): error C2676:         with
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(445,19): error C2676:         [
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(445,19): error C2676:             _Kty=int,
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(445,19): error C2676:             _Ty=size_t
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(445,19): error C2676:         ]
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(485,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(668,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(673,69): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(675,69): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(677,69): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Formak21\Documents\GitHub\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(679,69): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(507,13): warning C4930: 'GeneticAlg Temp(size_t,size_t,size_t)': prototyped function not called (was a variable definition intended?)
+C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(519,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe
