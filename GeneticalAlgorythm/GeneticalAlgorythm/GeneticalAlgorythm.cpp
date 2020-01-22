@@ -419,9 +419,9 @@ public:
 		}
 		if (type == 1) {
 			size_t temp = 0;
-			for (size_t i = 0; i < BestID.size(); i++) {
-				if (Population[BestID[i]].FitNumber() > temp) {
-					temp = Population[BestID[i]].FitNumber();
+			for (size_t i = 0; i < IndivNum; i++) {
+				if (Population[i].FitNumber() > temp) {
+					temp = Population[i].FitNumber();
 				}
 			}
 			BestLinePerTick.addData(cycles, temp);
@@ -448,6 +448,9 @@ public:
 	}
 
 	void crossIndiv(size_t id1, size_t id2){
+		if (id1 == id2) {
+			return;
+		}
 		int crossLenght = rand() % IndivLenght;
 		std::vector<bool> temp = Population[id1].indivHalf(Population[id2].indivHalf({}, crossLenght), crossLenght);
 		Population[id2].indivHalf(temp, crossLenght);
@@ -483,12 +486,18 @@ public:
 		}
 		Guard();
 	}
-	void FulCycl() {
+	void FulCycl(size_t cycle) {
 		Guard();
-		Selection();
-		crossIndiv(BestID[0], BestID[1]);
-		MutatInit(BestID[0], BestID[1]);
+		for (size_t i = 0; i < BestCount; i++) {
+			Selection();
+		}
+		for (size_t i = 0; i < BestCount-1; i++) {
+			crossIndiv(BestID[i], BestID[i+1]);
+			MutatInit(BestID[i], BestID[i+1]);
+		}
 		BestFit();
+		addData(0, cycle);
+		addData(1, cycle);
 		regenIndiv();
 	}
 	size_t BestFit() {
@@ -501,13 +510,17 @@ public:
 		return BestFitStatus;
 	}
 };
-void GenAlgProc(size_t IndivNum, size_t IndivLenght, size_t MutationProb, int cycle, int cyclevariant) {
-	int temp = cycle;
-	cycle = 0;
-	GeneticAlg Temp(size_t IndivLenght, size_t IndivNum, size_t MutationProb);
-	//while (true) {
-	//	Temp.FitCycl();
-	//}
+void GenAlgProc(size_t IndivNum, size_t IndivLenght, size_t MutationProb, int Cycles, int CycleVar=0, size_t BC=2) {
+	int temp = Cycles;
+	Cycles = 0;
+	GeneticAlg Temp( IndivLenght,  IndivNum,  MutationProb, BC);
+	while (true) {
+		Cycles++;
+		if (Cycles-1 == temp && CycleVar==0) {
+			break;
+		}
+		Temp.FulCycl(Cycles);
+	}
 
 }
 
@@ -525,11 +538,11 @@ int main() {
 	this will be fixed in the next version.*/
 	
 	
-	int MutationProb = 5;
-	int LineSymb = 10;
-	std::vector<bool> FirstPop = RandomMatrix(LineSymb, 4);
-	std::vector<bool> BestLine1 = BestLineSearch(FirstPop, LineSymb);
-	std::vector<bool> BestLine2 = BestLineSearch(FirstPop, LineSymb, BestLine1);
+	size_t MutationProb = 5;
+	size_t LineSymb = 10;
+	size_t IndivNum = 4;
+	size_t BC=2;
+	GeneticAlg Ga(LineSymb, IndivNum, MutationProb, BC);
 
 	while (true) {
 		std::cout << "\nFormak21 2020 " << version << "\n" << "\n" << "\n"
@@ -552,11 +565,12 @@ int main() {
 		std::cout << "Answer(ONLY 1-11):";
 		std::cin >> answer;
 		if (answer == 1) {
-			FirstPop.clear();
-			FirstPop = RandomMatrix(LineSymb, 4);
+			Ga.IndivReset();
 			std::cout << std::endl;
 			std::cout << "First Population: \n";
-			PrintMatrix(FirstPop, LineSymb);
+			for (int i = 0; i < Ga.IndivNum; i++) {
+				Ga.Population[i].PrintLine();
+			}
 			std::cout << std::endl;
 			system("pause");
 			continue;
@@ -564,59 +578,47 @@ int main() {
 		else if (answer == 2) {
 			std::cout << std::endl;
 			std::cout << "First Population: \n";
-			PrintMatrix(FirstPop, LineSymb);
+			for (int i = 0; i < Ga.IndivNum; i++) {
+				Ga.Population[i].PrintLine();
+			}
 			std::cout << std::endl;
 			system("pause");
 			continue;
 		}
 		else if (answer == 3) {
-			BestLine1.clear();
-			BestLine2.clear();
-			BestLine1 = BestLineSearch(FirstPop, LineSymb);
-			BestLine2 = BestLineSearch(FirstPop, LineSymb, BestLine1);
+			for (int i = 0; i < Ga.BestCount; i++) {
+				Ga.Selection();
+			}
 			std::cout << std::endl;
 			std::cout << "BestLines: \n";
-			PrintMatrix(BestLine1, LineSymb);
-			std::cout << std::endl;
-			PrintMatrix(BestLine2, LineSymb);
+			for (int i = 0; i < Ga.BestID.size(); i++) {
+				Ga.Population[Ga.BestID[i]].PrintLine();
+			}
 			std::cout << std::endl;
 			system("pause");
 			continue;
 		}
 		else if (answer == 4) {
-			std::vector<bool> temp1;
-			for (int i = 0; i < (LineSymb / 2); i++) {
-				temp1.push_back(BestLine1[i]);
+			for (size_t i = 0; i < Ga.BestCount - 1; i++) {
+				Ga.crossIndiv(Ga.BestID[i], Ga.BestID[i + 1]);
+				Ga.MutatInit(Ga.BestID[i], Ga.BestID[i + 1]);
 			}
-			for (int i = 0; i < (LineSymb / 2); i++) {
-				BestLine1[i] = BestLine2[i];
-			}
-			for (int i = 0; i < (LineSymb / 2); i++) {
-				BestLine2[i] = temp1[i];
-			}
-			rand() % 2 == 0 ? BestLine1 = MutationProc(BestLine1, MutationProb) : BestLine2 = MutationProc(BestLine2, MutationProb);
-
 			std::cout << std::endl;
 			std::cout << "BestLines Mutated: \n";
-			PrintMatrix(BestLine1, LineSymb);
-			std::cout << std::endl;
-			PrintMatrix(BestLine2, LineSymb);
+			for (int i = 0; i < Ga.BestID.size(); i++) {
+				Ga.Population[Ga.BestID[i]].PrintLine();
+			}
 			std::cout << std::endl;
 			system("pause");
 			continue;
 		}
 		else if (answer == 5) {
-			FirstPop.clear();
-			FirstPop = RandomMatrix(LineSymb, 2);
-			for (int i = 0; i < LineSymb; i++) {
-				FirstPop.push_back(BestLine1[i]);
-			}
-			for (int i = 0; i < LineSymb; i++) {
-				FirstPop.push_back(BestLine2[i]);
-			}
+			Ga.regenIndiv();
 			std::cout << std::endl;
-			std::cout << "Population with bestlines: \n";
-			PrintMatrix(FirstPop, LineSymb);
+			std::cout << "Population: \n";
+			for (int i = 0; i < Ga.IndivNum; i++) {
+				Ga.Population[i].PrintLine();
+			}
 			std::cout << std::endl;
 			system("pause");
 			continue;
@@ -624,49 +626,34 @@ int main() {
 		else if (answer == 6) {
 			std::cout << std::endl << "Line lenght(BE CAREFUL, NOT INPUT ODD NUMBERS AND VERY BIG NUMBERS): ";
 			std::cin >> LineSymb;
+			Ga.IndivLenght = LineSymb;
+			Ga.IndivReset();
 			std::cout << std::endl;
 			system("pause");
 			continue;
 		}
 		else if (answer == 7) {
 			std::cout << std::endl << "Mutation Prob(0-100): ";
-			int temp2 = MutationProb;
 			std::cin >> MutationProb;
-			if (MutationProb > 100 && MutationProb < 0) {
-				MutationProb = temp2;
-				std::cout << "\nError\n";
-			}
+			Ga.MutatProbEdit(MutationProb);
 			std::cout << std::endl;
 			system("pause");
 			continue;
 		}
 		else if (answer == 8) {
 			int cycle;
-			std::cout << std::endl << "Cycles(0 for while true and reset, -1 for while true without reset, -2 while true for one idealline):";
+			std::cout << std::endl << "Cycles:";
 			std::cin >> cycle;
 			switch (cycle) {
-				case -2:
-					FitStatPerTick.funcinit("GeneticalAlgorithmType-2");
-					BestLinePerTick.funcinit("GeneticalAlgorithmType-2");
-					GeneticalAlgorithm(LineSymb, MutationProb, 0, -2);
-					break;
-				case -1:
-					FitStatPerTick.funcinit("GeneticalAlgorithmType-1");
-					BestLinePerTick.funcinit("GeneticalAlgorithmType-1");
-					GeneticalAlgorithm(LineSymb, MutationProb, 0, -1);
-					break;
 				case 0:
-					FitStatPerTick.funcinit("GeneticalAlgorithmType0");
-					BestLinePerTick.funcinit("GeneticalAlgorithmType0");
-					GeneticalAlgorithm(LineSymb, MutationProb, 0, 0);
+					FitStatPerTick.funcinit("GeneticalAlgorithmType1");
+					BestLinePerTick.funcinit("GeneticalAlgorithmType1");
+					GenAlgProc(IndivNum, LineSymb, MutationProb, cycle, 1, BC);
 					break;
 				default:
-					int modec;
-					std::cout << std::endl << "with reset or without? 3/1" << std::endl;
-					std::cin >> modec;
-					FitStatPerTick.funcinit("GeneticalAlgorithmType1, " + modec);
-					BestLinePerTick.funcinit("GeneticalAlgorithmType1, " + modec);
-					GeneticalAlgorithm(LineSymb, MutationProb, cycle, modec);
+					FitStatPerTick.funcinit("GeneticalAlgorithmType0");
+					BestLinePerTick.funcinit("GeneticalAlgorithmType0");
+					GenAlgProc(IndivNum, LineSymb, MutationProb, cycle, 0, BC);
 					break;
 			}
 		}
@@ -674,21 +661,25 @@ int main() {
 			int temp;
 			std::cout << std::endl << "Cycles(if u not want use cycles, type 0):";
 			std::cin >> temp;
-			RandomNumCheck(LineSymb, temp);
+			RandomNumCheck(int(LineSymb), temp);
 			std::cout << std::endl;
 			system("pause");
 			continue;
 		}
 		else if(answer == 10) {
-		std::cout << std::endl << "BestLines:"<< std::endl;
-		PrintMatrix(BestLine1, LineSymb);
 		std::cout << std::endl;
-		PrintMatrix(BestLine2, LineSymb);
+		std::cout << "BestLines: \n";
+		for (int i = 0; i < Ga.BestID.size(); i++) {
+			Ga.Population[Ga.BestID[i]].PrintLine();
+		}
 		std::cout << std::endl;
 		system("pause");
 		continue;
 		}
-		else if(answer == 11) {
+		else if (answer == 11) {
+			//Num edition... 
+		}
+		else if(answer == 12) {
 		return 0;
 		}
 		else { continue; }

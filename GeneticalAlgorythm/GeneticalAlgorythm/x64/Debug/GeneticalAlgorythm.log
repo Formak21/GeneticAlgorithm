@@ -1,4 +1,3 @@
 ﻿  GeneticalAlgorythm.cpp
-C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(507,13): warning C4930: 'GeneticAlg Temp(size_t,size_t,size_t)': prototyped function not called (was a variable definition intended?)
-C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(519,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(532,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe
