@@ -434,15 +434,18 @@ public:
 		std::vector<size_t> temp = { rand() % IndivNum, rand() % IndivNum };
 		if (Population[temp[0]].FitNumber() > Population[temp[1]].FitNumber()) {
 			BestID.push_back(temp[0]);
+		
 			return temp[0];
 		}
 		else if (Population[temp[0]].FitNumber() < Population[temp[1]].FitNumber()) {
 			BestID.push_back(temp[1]);
+		
 			return temp[1];
 		}
 		else {
 			short int tempp = rand() % 2;
 			BestID.push_back(temp[tempp]);
+			
 			return temp[tempp];
 		}
 	}
@@ -491,14 +494,18 @@ public:
 		for (size_t i = 0; i < BestCount; i++) {
 			Selection();
 		}
-		for (size_t i = 0; i < BestCount-1; i++) {
+		for (size_t i = 0; i < BestID.size(); i+=2) {
+			if (i > BestID.size() || i > BestID.size() + 1) {
+				break;
+			}
 			crossIndiv(BestID[i], BestID[i+1]);
 			MutatInit(BestID[i], BestID[i+1]);
 		}
+		
 		BestFit();
 		addData(0, cycle);
 		addData(1, cycle);
-		regenIndiv();
+		//regenIndiv();
 	}
 	size_t BestFit() {
 		Guard();
@@ -512,14 +519,14 @@ public:
 };
 void GenAlgProc(size_t IndivNum, size_t IndivLenght, size_t MutationProb, int Cycles, int CycleVar=0, size_t BC=2) {
 	int temp = Cycles;
-	Cycles = 0;
+	Cycles = 1;
 	GeneticAlg Temp( IndivLenght,  IndivNum,  MutationProb, BC);
 	while (true) {
-		Cycles++;
-		if (Cycles-1 == temp && CycleVar==0) {
+		if (Cycles >= temp && CycleVar==0) {
 			break;
 		}
 		Temp.FulCycl(Cycles);
+		Cycles++;
 	}
 
 }
