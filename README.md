@@ -1,4 +1,4 @@
-# GeneticAlgorithm(v1.1.0B)
+# GeneticAlgorithm(v1.1.0A)
 This algorithm is writed on c++, with using class vectors.
 
 - Genetical Algorithm? What is this?
