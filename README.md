@@ -10,4 +10,4 @@ Works only on Windows 10 and Visual Studio 2019.
 
 Last Update:
 Not done yet :P
-version 1.1.0B
+version 1.1.0A
