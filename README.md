@@ -1,5 +1,5 @@
 
-# GeneticAlgorithm(v2.0.1A)
+# GeneticAlgorithm Reloaded(v2.0.1A)
 This algorithm is fully rewrited on c++.:)
 Algorithm is based on vector of struct instances.
 
