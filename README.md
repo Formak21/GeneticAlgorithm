@@ -1,6 +1,6 @@
 
 # GeneticAlgorithm(v2.0.1A)
-This algorithm is writed on c++.
+This algorithm is fully rewrited on c++.:)
 Algorithm is based on vector of struct instances.
 
 - Genetical Algorithm? What is this?
