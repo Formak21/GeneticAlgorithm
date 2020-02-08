@@ -1,3 +1,0 @@
-﻿  GeneticalAlgorythm.cpp
-C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(540,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe
