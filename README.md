@@ -1,4 +1,4 @@
-# GeneticAlgorithm(v1.1.0A)
+# GeneticAlgorithm(v1.1.0B)
 This algorithm is writed on c++, with using class vectors.
 
 - Genetical Algorithm? What is this?
@@ -10,4 +10,4 @@ Works only on Windows 10 and Visual Studio 2019.
 
 Last Update:
 Not done yet :P
-version 1.1.0A
+version 1.1.0B
