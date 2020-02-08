@@ -1,3 +1,5 @@
 ﻿  GeneticalAlgorythm.cpp
-C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(540,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  GeneticalAlgorythm.vcxproj -> C:\Users\Formak21\Documents\GitHub\GeneticAlgorithm\GeneticalAlgorythm\x64\Debug\GeneticalAlgorythm.exe
+D:\Новая папка (2)\GeneticAlgorithm-Alternative\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(23,3): error C3861: '_strtime_s': identifier not found
+D:\Новая папка (2)\GeneticAlgorithm-Alternative\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(25,3): error C3861: '_strdate_s': identifier not found
+D:\Новая папка (2)\GeneticAlgorithm-Alternative\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(376,8): error C3861: 'time': identifier not found
+D:\Новая папка (2)\GeneticAlgorithm-Alternative\GeneticalAlgorythm\GeneticalAlgorythm\GeneticalAlgorythm.cpp(378,2): error C3861: '_tzset': identifier not found
