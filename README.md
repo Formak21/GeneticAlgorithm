@@ -29,7 +29,6 @@ a change in some genes to the opposite (in our case, a change of one to zero, an
 
 Fourth step: Record a new population in place of the old and repeat the algorithm.
 
-Works only on Windows 10 and Visual Studio 2019.
 
 Last Update:
-version 2.0.1A
+version 2.0.2A
