@@ -87,7 +87,7 @@ struct GenIndiv {
     //Mutation of individ
     void Mutation(size_t &ProbTemp) {
         for (size_t i = 0; i < Indv.size(); i++) {
-            size_t RandPerc = size_t((rand() % 101)) + 1;
+            size_t RandPerc = size_t((rand() % 1001)) + 1;
             if (RandPerc <= ProbTemp) {
                if (Indv[i]) {Indv[i] = false;} else {Indv[i] = true;}
             }
@@ -129,7 +129,7 @@ struct GeneticAlgorithm {
                 if(rand() % 2 == 0){
                     NextPopulation.push_back(Population[RandID[0]]);
                 }else{
-                    NextPopulation.push_back(Population[RandID[0]]);
+                    NextPopulation.push_back(Population[RandID[1]]);
                 }
             }
         }
@@ -310,7 +310,7 @@ int main() {
         }
         case 0:
             size_t TempNum, TempLength, TempProb, TempCycles;
-            std::cout << "\n\n* You must input number of lines, Length of individ, MutationProb(0-100), Cycles(cycles>=0)\n\n\nInput Numbers:";
+            std::cout << "\n\n* You must input number of lines, Length of individ, MutationProb(0-1000), Cycles(cycles>=0)\n\n\nInput Numbers:";
             std::cin >> TempNum >> TempLength >> TempProb >> TempCycles;
             GenAlgProc(TempNum, TempLength, TempProb, TempCycles);
             break;
