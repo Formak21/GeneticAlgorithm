@@ -7,7 +7,7 @@
 #include <math.h>
 #include <iomanip>
 //Version
-const std::string ver = "2.0.3A RELOADED";
+const std::string ver = "2.0.3B";
 std::vector< std::pair< int,int > > BestFS; // Length / fs
 //This class is generating files with dot-coordinates for math-graph
 class Graph {
@@ -64,7 +64,7 @@ struct GenIndiv {
     void RandInd(size_t &LenTemp) {
         Indv.clear();
         for (size_t i = 0; i < LenTemp; i++) {
-            Indv.push_back(rand() % 2 == 1 ? true : false);
+            Indv.push_back(bool(rand() % 2));
         }
     }
     //This function returns individ quality
@@ -81,7 +81,7 @@ struct GenIndiv {
     //This Function can print the individ
     void PrintIndv() {
         for (size_t i = 0; i < Indv.size(); i++) {
-            if (Indv[i]) { std::cout << "1";}else {std::cout << "0";}
+            std::cout << int(Indv[i]);
         }
     }
     //Mutation of individ
@@ -89,9 +89,12 @@ struct GenIndiv {
         for (size_t i = 0; i < Indv.size(); i++) {
             size_t RandPerc = size_t((rand() % 1001)) + 1;
             if (RandPerc <= ProbTemp) {
-               if (Indv[i]) {Indv[i] = false;} else {Indv[i] = true;}
+               Indv[i]=!Indv[i];
             }
         }
+    }
+    void IndvReverse(){
+        std::reverse(Indv.begin(), Indv.end());
     }
 };
 
@@ -115,7 +118,7 @@ struct GeneticAlgorithm {
 
     }
     //Selection
-    void Selection() {
+    void Selection(bool param=false) {
         //this cycle is finding 2 parrents from 4 random individs
         for (size_t x = 0; x < 2; x++) {
             size_t RandID[2] = { rand() % Population.size(),rand() % Population.size() };
@@ -126,16 +129,13 @@ struct GeneticAlgorithm {
                 NextPopulation.push_back(Population[RandID[1]]);
             }
             else {
-                if(rand() % 2 == 0){
-                    NextPopulation.push_back(Population[RandID[0]]);
-                }else{
-                    NextPopulation.push_back(Population[RandID[1]]);
-                }
+                NextPopulation.push_back(Population[RandID[(rand() % 2)]]);
             }
+            if(param) { NextPopulation[NextPopulation.size() - 1].IndvReverse();}
         }
     }
     //Crossover
-    void Crossover() {
+    void Crossover(bool param=false) {
         //writing in first parrent elements from second before random element, and in second first from random element, and deleting first/second(random)
         size_t r = rand() % IndivLength;
         for (size_t x = 0; x < r; x++) {
@@ -144,12 +144,8 @@ struct GeneticAlgorithm {
         for (size_t x = r; x < IndivLength; x++) {
             NextPopulation[NextPopulation.size()-1].Indv[x] = NextPopulation[NextPopulation.size() - 2].Indv[x];
         }
-        if (rand() % 2 == 0) {
-            NextPopulation.erase(NextPopulation.end()-1);
-        }
-        else {
-            NextPopulation[NextPopulation.size() - 2] = NextPopulation[NextPopulation.size()-1];
-            NextPopulation.erase(NextPopulation.end()-1);
+        if (!param){
+            NextPopulation.erase(NextPopulation.end()-(rand() % 2));
         }
     }
     //Mutation, calls mutation func in every element
@@ -219,10 +215,22 @@ struct GeneticAlgorithm {
             Population.push_back(Temp);
         }
     }
-    void FullCycle(){
-        for (size_t i = 0; i < Population.size(); i++) {
-            Selection();
-            Crossover();
+    void FullCycle(bool param=false){
+        if (param){
+            for (size_t i = 0; i < Population.size(); i++) {
+                Selection(bool(rand() % 2));
+                if (size_t temppp=(rand() % 2) && i < Population.size()-1){
+                    i++;
+                    Crossover(bool(temppp));
+                } else {
+                    Crossover();
+                }
+            }
+        } else {
+            for (size_t i = 0; i < Population.size(); i++) {
+                Selection();
+                Crossover();
+            }
         }
         Population.clear();
         Population = NextPopulation;
@@ -242,33 +250,18 @@ struct GeneticAlgorithm {
         }
     }
 };
-void GenAlgProc(size_t &IndivNum, size_t &IndivLength, size_t &MutationProb, size_t &Cycles) {
+void GenAlgProc(size_t &IndivNum, size_t &IndivLength, size_t &MutationProb, size_t &Cycles, bool param=false) {
     GeneticAlgorithm Temp(IndivLength, IndivNum, MutationProb);
-    Temp.AddData(4, 0, "GENETICAL ALGORITHM STANDART FUNCTION");
+    !param ? Temp.AddData(4, 0, "GENETICAL ALGORITHM STANDART FUNCTION") : Temp.AddData(4, 0, "GENETICAL ALGORITHM MODIFICATED FUNCTION");
     std::cout << "\n";
     for (size_t i = 1; i <= Cycles; i++){
         std::cout << "Cycle:" << i;
-        Temp.FullCycle();
+        Temp.FullCycle(param);
         std::cout << "\r";
     }
-    Temp.AddData(4, 0, "GENETICAL ALGORITHM STANDART FUNCTION END");
-    std::cout << "\nG.A. Stoped, returns to Main Menu..." << "\n\n\n";
+    Temp.AddData(4, 0, "FUNCTION END");
+    std::cout << "\nStoped, returns to Main Menu..." << "\n\n\n";
 }
-
-int TranslatorBVtoD(std::vector<bool> &temp, bool param=true){
-    int answer=0;
-    if (!param){
-        std::reverse( temp.begin(), temp.end() );
-    }
-    for (size_t i = 0; i < temp.size(); i++){
-            if (temp[i])
-                answer=answer+(1<<int(temp.size()-i));
-            else
-                continue;
-   }
-   return answer;
-}
-
 int main() {
     system("color 02");
     while (true) {
@@ -286,34 +279,51 @@ int main() {
             << "                                                                    \\$$$$$$  |                                                    " << std::endl
             << "                                                                     \\______/                           Formak21(c) version:" << ver << std::endl
             << "\n \n \n";
-        std::cout << "Main Menu: \n* Input 0 to start GeneticAlgorithm  \n* Input 1 to Random(not done yet)  \n* Input 2 to find errors \n* Input 3 to exit";
+        std::cout << "Main Menu: \n* Input 0 to start GeneticAlgorithm  \n* Input 1 to Random(not done yet)  \n* Input 2 to find errors \n* Input 3 to clear buffer error finding func \n* Input 4 to exit";
 
         std::cout << "\n\n\nInput Number:";
         short unsigned int n;
         std::cin >> n;
         switch (n) {
-        case 3:
+        case 4:
+        {
             return 0;
             break;
+        }
         case 1:
+        {
             std::cout << "\nNot Done Yet :P\n";
             break;
+        }
         case 2:
         {
-            double Forml = 0.0;
-            for (size_t i = 0; i < BestFS.size(); i++) {
-                Forml += double(std::abs(double(BestFS[i].second - BestFS[i].first))) / double(BestFS[i].second);
+            if (!BestFS.empty()){
+                double Forml = 0.0;
+                for (size_t i = 0; i < BestFS.size(); i++) {
+                    Forml += double(std::abs(double(BestFS[i].second - BestFS[i].first))) / double(BestFS[i].second);
+                }
+                Forml /= double(BestFS.size());
+                std::cout << "E=" << std::fixed << std::setprecision(128) << Forml;
+            } else {
+                std::cout << "\n\nbuffer empty.\n\n";
             }
-            Forml /= double(BestFS.size());
-            std::cout << std::fixed << std::setprecision(128) << Forml;
+            break;
+        }
+        case 3:
+        {
+            BestFS.clear();
+            std::cout << "\n\n\nDone.\n\n";
             break;
         }
         case 0:
+        {
             size_t TempNum, TempLength, TempProb, TempCycles;
-            std::cout << "\n\n* You must input number of lines, Length of individ, MutationProb(0-1000), Cycles(cycles>=0)\n\n\nInput Numbers:";
-            std::cin >> TempNum >> TempLength >> TempProb >> TempCycles;
-            GenAlgProc(TempNum, TempLength, TempProb, TempCycles);
+            std::cout << "\n\n* You must input number of lines, Length of individ, MutationProb(0-1000), Cycles(cycles>=0), Param(0-1)\n\n\nInput Numbers:";
+            bool paramm;
+            std::cin >> TempNum >> TempLength >> TempProb >> TempCycles >> paramm;
+            GenAlgProc(TempNum, TempLength, TempProb, TempCycles, paramm); // param is turns on, modifications.
             break;
+        }
         }
     }
 }
