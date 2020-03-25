@@ -7,8 +7,8 @@
 #include <math.h>
 #include <iomanip>
 //Version
-const std::string ver = "2.0.2A RELOADED";
-std::vector< std::pair< int,int > > BestFS; // Lenght / fs
+const std::string ver = "2.0.3A RELOADED";
+std::vector< std::pair< int,int > > BestFS; // Length / fs
 //This class is generating files with dot-coordinates for math-graph
 class Graph {
 private:
@@ -58,10 +58,10 @@ Graph LowQualPerTick("LowPerTick"); //Worst quality, per every cycle, x-ticks, y
 struct GenIndiv {
     std::vector<bool> Indv; //main vector of every indiv
     //Constructor
-    GenIndiv(size_t LenTemp) {
+    GenIndiv(size_t &LenTemp) {
         RandInd(LenTemp);
     }
-    void RandInd(size_t LenTemp) {
+    void RandInd(size_t &LenTemp) {
         Indv.clear();
         for (size_t i = 0; i < LenTemp; i++) {
             Indv.push_back(rand() % 2 == 1 ? true : false);
@@ -71,7 +71,7 @@ struct GenIndiv {
     size_t IndvQual() {
         size_t Temp = 0;
         for (size_t i = 0; i < Indv.size(); i++) {
-            if (Indv[i] == true) {
+            if (Indv[i]) {
                 Temp++;
             }
 
@@ -81,15 +81,15 @@ struct GenIndiv {
     //This Function can print the individ
     void PrintIndv() {
         for (size_t i = 0; i < Indv.size(); i++) {
-            Indv[i] == true ? std::cout << "1" : std::cout << "0";
+            if (Indv[i]) { std::cout << "1";}else {std::cout << "0";}
         }
     }
     //Mutation of individ
-    void Mutation(size_t ProbTemp) {
+    void Mutation(size_t &ProbTemp) {
         for (size_t i = 0; i < Indv.size(); i++) {
             size_t RandPerc = size_t((rand() % 101)) + 1;
             if (RandPerc <= ProbTemp) {
-                Indv[i] == true ? Indv[i] = false : Indv[i] = true;
+               if (Indv[i]) {Indv[i] = false;} else {Indv[i] = true;}
             }
         }
     }
@@ -100,18 +100,18 @@ struct GeneticAlgorithm {
     //main vector
     std::vector<GenIndiv> Population;
     std::vector<GenIndiv> NextPopulation;
-    //IndivLenght - size of every individ, MutatProb - Mutation probual, BestQual - Best Quality Counter of population
-    size_t IndivLenght, MutatProb, BestQualA = 0, Cycles=0;
+    //IndivLength - size of every individ, MutatProb - Mutation probual, BestQual - Best Quality Counter of population
+    size_t IndivLength, MutatProb, BestQualA = 0, Cycles=0;
     //Constructor
-    GeneticAlgorithm(size_t &TempLenght, size_t &TempNum, size_t &TempProb) {
-        IndivLenght = TempLenght;
-        MutatProb = TempProb;
+    GeneticAlgorithm(size_t &IndivLength, size_t &TempNum, size_t &MutatProb) {
+       this->IndivLength = IndivLength;
+        this->MutatProb = MutatProb;
         //Filling Population vector
         for (size_t i = 0; i < TempNum; i++) {
-            GenIndiv Temp(IndivLenght);
+            GenIndiv Temp(IndivLength);
             Population.push_back(Temp);
         }
-        BestFS.push_back({ IndivLenght, 0 });
+        BestFS.push_back({ IndivLength, 0 });
 
     }
     //Selection
@@ -126,18 +126,22 @@ struct GeneticAlgorithm {
                 NextPopulation.push_back(Population[RandID[1]]);
             }
             else {
-                rand() % 2 == 0 ? NextPopulation.push_back(Population[RandID[0]]) : NextPopulation.push_back(Population[RandID[0]]);
+                if(rand() % 2 == 0){
+                    NextPopulation.push_back(Population[RandID[0]]);
+                }else{
+                    NextPopulation.push_back(Population[RandID[0]]);
+                }
             }
         }
     }
     //Crossover
     void Crossover() {
         //writing in first parrent elements from second before random element, and in second first from random element, and deleting first/second(random)
-        size_t r = rand() % IndivLenght;
+        size_t r = rand() % IndivLength;
         for (size_t x = 0; x < r; x++) {
             NextPopulation[NextPopulation.size()-2].Indv[x] = NextPopulation[NextPopulation.size()-1].Indv[x];
         }
-        for (size_t x = r; x < IndivLenght; x++) {
+        for (size_t x = r; x < IndivLength; x++) {
             NextPopulation[NextPopulation.size()-1].Indv[x] = NextPopulation[NextPopulation.size() - 2].Indv[x];
         }
         if (rand() % 2 == 0) {
@@ -186,7 +190,7 @@ struct GeneticAlgorithm {
             if (tempp > BestQualA) {
                 BestQualA = tempp;
             }
-            BestFS.back() = { IndivLenght, BestQualA };
+            BestFS.back() = { IndivLength, BestQualA };
             BestQualAll.addData(Cycle,BestQualA);
             break;
         case 3:
@@ -205,13 +209,13 @@ struct GeneticAlgorithm {
             break;
         }
     }
-    void ResetInit(size_t TempNum) {
+    void ResetInit(size_t &TempNum) {
         AddData(4, 0, "RESET");
         BestQualA = 0;
         Cycles = 0;
         Population.clear();
         for (size_t i = 0; i < TempNum; i++) {
-            GenIndiv Temp(IndivLenght);
+            GenIndiv Temp(IndivLength);
             Population.push_back(Temp);
         }
     }
@@ -238,8 +242,8 @@ struct GeneticAlgorithm {
         }
     }
 };
-void GenAlgProc(size_t &IndivNum, size_t &IndivLenght, size_t &MutationProb, size_t &Cycles) {
-    GeneticAlgorithm Temp(IndivLenght, IndivNum, MutationProb);
+void GenAlgProc(size_t &IndivNum, size_t &IndivLength, size_t &MutationProb, size_t &Cycles) {
+    GeneticAlgorithm Temp(IndivLength, IndivNum, MutationProb);
     Temp.AddData(4, 0, "GENETICAL ALGORITHM STANDART FUNCTION");
     std::cout << "\n";
     for (size_t i = 1; i <= Cycles; i++){
@@ -247,10 +251,11 @@ void GenAlgProc(size_t &IndivNum, size_t &IndivLenght, size_t &MutationProb, siz
         Temp.FullCycle();
         std::cout << "\r";
     }
+    Temp.AddData(4, 0, "GENETICAL ALGORITHM STANDART FUNCTION END");
     std::cout << "\nG.A. Stoped, returns to Main Menu..." << "\n\n\n";
 }
 
-int TranslatorDtoT(std::vector<bool> &temp, bool param=true){
+int TranslatorBVtoD(std::vector<bool> &temp, bool param=true){
     int answer=0;
     if (!param){
         std::reverse( temp.begin(), temp.end() );
@@ -300,14 +305,14 @@ int main() {
                 Forml += double(std::abs(double(BestFS[i].second - BestFS[i].first))) / double(BestFS[i].second);
             }
             Forml /= double(BestFS.size());
-            std::cout << std::fixed << std::setprecision(256) << Forml;
+            std::cout << std::fixed << std::setprecision(128) << Forml;
             break;
         }
         case 0:
-            size_t TempNum, TempLenght, TempProb, TempCycles;
-            std::cout << "\n\n* You must input number of lines, lenght of individ, MutationProb(0-100), Cycles(cycles>=0)\n\n\nInput Numbers:";
-            std::cin >> TempNum >> TempLenght >> TempProb >> TempCycles;
-            GenAlgProc(TempNum, TempLenght, TempProb, TempCycles);
+            size_t TempNum, TempLength, TempProb, TempCycles;
+            std::cout << "\n\n* You must input number of lines, Length of individ, MutationProb(0-100), Cycles(cycles>=0)\n\n\nInput Numbers:";
+            std::cin >> TempNum >> TempLength >> TempProb >> TempCycles;
+            GenAlgProc(TempNum, TempLength, TempProb, TempCycles);
             break;
         }
     }
