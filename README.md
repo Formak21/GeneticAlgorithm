@@ -1,5 +1,5 @@
 
-# GeneticAlgorithm Reloaded(v2.0.2A)
+# GeneticAlgorithm Reloaded(v2.0.3A)
 This algorithm is fully rewrited on c++.:)
 Algorithm is based on vector of struct instances.
 
@@ -31,4 +31,4 @@ Fourth step: Record a new population in place of the old and repeat the algorith
 
 
 Last Update:
-version 2.0.2A
+version 2.0.3A
