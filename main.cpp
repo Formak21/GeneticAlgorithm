@@ -64,13 +64,15 @@ public:
             indv.push_back(bool(rand() % 2));
         }
     }
-    size_t ind_qual() {
+    size_t ind_qual(bool binary_decemical = false) {  //true= dec false = bin
         size_t tmp = 0;
         for (size_t i = 0; i < size(); i++) {
-            if (indv[i]) {
+            if (indv[i] && !binary_decemical) {
                 tmp++;
             }
-
+            if (indv[i] && binary_decemical) {
+                tmp += std::pow(2,i);
+            }
         }
         return tmp;
     }
