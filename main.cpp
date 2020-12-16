@@ -15,7 +15,7 @@
 #include <iomanip>
 #include <chrono>
 #include <vector>
-const std::string ver = "2.0.5 beta 5";
+const std::string ver = "2.0.6";
 class Graph {
 private:
     std::string filename;
@@ -47,7 +47,7 @@ Graph worst_qual_per_tick("LowPerTick"); //Worst quality, per every cycle, x-tic
 enum MutationRegulator { WEAK, AVERAGE, STRONG, NULLM };
 struct GeneticIndv{
 private:
-    std::vector<bool> indv;
+    std::vector<char> indv;
 public:
     GeneticIndv(size_t len_tmp) {
         rand_ind(len_tmp);
@@ -70,7 +70,7 @@ public:
             if (indv[i] && !binary_decemical) {
                 tmp++;
             }
-            if (indv[i] && binary_decemical) {
+            if (indv[i] && binary_decemical) { //OVERFLOW
                 tmp += std::pow(2,i);
             }
         }
@@ -108,7 +108,7 @@ public:
 };
 std::ostream& operator<< (std::ostream &out, const GeneticIndv &prtindiv){
     for (size_t i = 0; i < prtindiv.indv.size(); i++) {
-        out << prtindiv.indv[i];
+        out << int(prtindiv.indv[i]);
     }
     return out;
 }
