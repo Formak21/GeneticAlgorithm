@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <string>
+#include <filesystem>
 #include <algorithm>
 #include <ctime>
 #include <utility>
@@ -15,7 +16,7 @@
 #include <iomanip>
 #include <chrono>
 #include <vector>
-const std::string ver = "2.0.6";
+const std::string ver = "2.0.6.1";
 class Graph {
 private:
     std::string filename;
@@ -24,20 +25,16 @@ public:
     Graph(const std::string temp) {
         const std::string filename = temp + ".txt";
         opt.open(filename, std::ofstream::app);
-        int randnum = rand() % 32520;
-        int n = 1;
-        opt << "\n#GA RELOADED " << ver << " GRAPH OPENED RandNum: " << randnum << " No: " << n << " " << filename << "#";
+        opt << "#GA RELOADED " << ver << " GRAPH OPENED RandNum: " << std::to_string(rand() % 65535) << " " << filename << "#\n";
     }
     ~Graph() {
         opt.close();
     }
-    void prnt_txt(std::string &text) {
-        opt << "\n#" << text << "#";
-        opt.flush();
+    inline void prnt_txt(const std::string &text) {
+        opt << "#" << text << "#"<<std::endl;
     }
-    void add_data(size_t x, size_t y) {
-        opt << "\n(" << x << ", " << y << ")";
-        opt.flush();
+    inline void add_data(const std::pair<size_t, size_t> &points) {
+        opt << points.first << ", " << points.second << std::endl;
     }
 };
 Graph avg_qual_per_tick("AvgPerTick"); //Average quality, per every cycle, x-ticks, y-quality.
@@ -52,10 +49,10 @@ public:
     GeneticIndv(size_t len_tmp) {
         rand_ind(len_tmp);
     }
-    void ind_rvrs(){
+    inline void ind_rvrs(){
         std::reverse(indv.begin(), indv.end());
     }
-    size_t size(){
+    inline size_t size(){
         return indv.size();
     }
     void rand_ind(size_t len_tmp) {
@@ -98,12 +95,12 @@ public:
         }
     }
     friend std::ostream& operator<< (std::ostream &out, const GeneticIndv &prtindiv);
-    friend bool operator< (GeneticIndv &l, GeneticIndv &r);
-    friend bool operator> (GeneticIndv &l, GeneticIndv &r);
-    friend bool operator<= (GeneticIndv &l, GeneticIndv &r);
-    friend bool operator>= (GeneticIndv &l, GeneticIndv &r);
-    friend bool operator== (const GeneticIndv &l, const GeneticIndv &r);
-    friend bool operator!= (const GeneticIndv &l, const GeneticIndv &r);
+    friend inline bool operator< (GeneticIndv &l, GeneticIndv &r);
+    friend inline bool operator> (GeneticIndv &l,  GeneticIndv &r);
+    friend inline bool operator<= (GeneticIndv &l, GeneticIndv &r);
+    friend inline bool operator>= (GeneticIndv &l, GeneticIndv &r);
+    friend inline bool operator== (const GeneticIndv &l, const GeneticIndv &r);
+    friend inline bool operator!= (const GeneticIndv &l, const GeneticIndv &r);
     friend GeneticIndv operator+ (GeneticIndv l, GeneticIndv &r);
 };
 std::ostream& operator<< (std::ostream &out, const GeneticIndv &prtindiv){
@@ -112,22 +109,22 @@ std::ostream& operator<< (std::ostream &out, const GeneticIndv &prtindiv){
     }
     return out;
 }
-bool operator< (GeneticIndv &l, GeneticIndv &r){
+inline bool operator< (GeneticIndv &l, GeneticIndv &r){
     return l.ind_qual() < r.ind_qual();
 }
-bool operator> (GeneticIndv &l, GeneticIndv &r){
+inline bool operator> (GeneticIndv &l, GeneticIndv &r){
     return l.ind_qual() > r.ind_qual();
 }
-bool operator<= (GeneticIndv &l, GeneticIndv &r){
+inline bool operator<= (GeneticIndv &l, GeneticIndv &r){
     return l.ind_qual() <= r.ind_qual();
 }
-bool operator>= (GeneticIndv &l, GeneticIndv &r){
+inline bool operator>= (GeneticIndv &l, GeneticIndv &r){
     return l.ind_qual() >= r.ind_qual();
 }
-bool operator== (const GeneticIndv &l, const GeneticIndv &r){
+inline bool operator== (const GeneticIndv &l, const GeneticIndv &r){
     return l.indv == r.indv;
 }
-bool operator!= (const GeneticIndv &l, const GeneticIndv &r){
+inline bool operator!= (const GeneticIndv &l, const GeneticIndv &r){
     return l.indv != r.indv;
 }
 GeneticIndv operator+ (GeneticIndv l, GeneticIndv &r){
@@ -283,7 +280,7 @@ public:
 };
 std::ostream& operator<< (std::ostream &out, GeneticAlgorithm &prtalg){
     for (size_t i = 0; i < prtalg.size(); i++) {
-        out << prtalg.popul.first[i] << std::endl;
+        out << prtalg.popul.first[i] << '\n';
     }
     return out;
 }
@@ -295,17 +292,17 @@ int main(){
     while (true) {
         std::cout
             << "\n\n\n\n\n\n"
-            << " $$$$$$\\                             $$\\    $$\\          $$$$$$\\ $$\\                           $$\\  $$\\    $$\\                    " << std::endl
-            << "$$  __$$\\                            $$ |   \\__|        $$  __$$\\$$ |                          \\__| $$ |   $$ |                   " << std::endl
-            << "$$ /  \\__|$$$$$$\\ $$$$$$$\\  $$$$$$\\$$$$$$\\  $$\\ $$$$$$$\\$$ /  $$ $$ |$$$$$$\\  $$$$$$\\  $$$$$$\\ $$\\$$$$$$\\  $$$$$$$\\ $$$$$$\\$$$$\\  " << std::endl
-            << "$$ |$$$$\\$$  __$$\\$$  __$$\\$$  __$$\\_$$  _| $$ $$  _____$$$$$$$$ $$ $$  __$$\\$$  __$$\\$$  __$$\\$$ \\_$$  _| $$  __$$\\$$  _$$  _$$\\ " << std::endl
-            << "$$ |\\_$$ $$$$$$$$ $$ |  $$ $$$$$$$$ |$$ |   $$ $$ /     $$  __$$ $$ $$ /  $$ $$ /  $$ $$ |  \\__$$ | $$ |   $$ |  $$ $$ / $$ / $$ |" << std::endl
-            << "$$ |  $$ $$   ____$$ |  $$ $$   ____|$$ |$$\\$$ $$ |     $$ |  $$ $$ $$ |  $$ $$ |  $$ $$ |     $$ | $$ |$$\\$$ |  $$ $$ | $$ | $$ |" << std::endl
-            << "\\$$$$$$  \\$$$$$$$\\$$ |  $$ \\$$$$$$$\\ \\$$$$  $$ \\$$$$$$$\\$$ |  $$ $$ \\$$$$$$$ \\$$$$$$  $$ |     $$ | \\$$$$  $$ |  $$ $$ | $$ | $$ |" << std::endl
-            << " \\______/ \\_______\\__|  \\__|\\_______| \\____/\\__|\\_______\\__|  \\__\\__|\\____$$ |\\______/\\__|     \\__|  \\____/\\__|  \\__\\__| \\__| \\__|" << std::endl
-            << "                                                                    $$\\   $$ |                                                    " << std::endl
-            << "                                                                    \\$$$$$$  |                                                    " << std::endl
-            << "                                                                     \\______/                           Formak21(c) version:" << ver << std::endl
+            << " $$$$$$\\                             $$\\    $$\\          $$$$$$\\ $$\\                           $$\\  $$\\    $$\\                    " << '\n'
+            << "$$  __$$\\                            $$ |   \\__|        $$  __$$\\$$ |                          \\__| $$ |   $$ |                   " << '\n'
+            << "$$ /  \\__|$$$$$$\\ $$$$$$$\\  $$$$$$\\$$$$$$\\  $$\\ $$$$$$$\\$$ /  $$ $$ |$$$$$$\\  $$$$$$\\  $$$$$$\\ $$\\$$$$$$\\  $$$$$$$\\ $$$$$$\\$$$$\\  " << '\n'
+            << "$$ |$$$$\\$$  __$$\\$$  __$$\\$$  __$$\\_$$  _| $$ $$  _____$$$$$$$$ $$ $$  __$$\\$$  __$$\\$$  __$$\\$$ \\_$$  _| $$  __$$\\$$  _$$  _$$\\ " << '\n'
+            << "$$ |\\_$$ $$$$$$$$ $$ |  $$ $$$$$$$$ |$$ |   $$ $$ /     $$  __$$ $$ $$ /  $$ $$ /  $$ $$ |  \\__$$ | $$ |   $$ |  $$ $$ / $$ / $$ |" << '\n'
+            << "$$ |  $$ $$   ____$$ |  $$ $$   ____|$$ |$$\\$$ $$ |     $$ |  $$ $$ $$ |  $$ $$ |  $$ $$ |     $$ | $$ |$$\\$$ |  $$ $$ | $$ | $$ |" << '\n'
+            << "\\$$$$$$  \\$$$$$$$\\$$ |  $$ \\$$$$$$$\\ \\$$$$  $$ \\$$$$$$$\\$$ |  $$ $$ \\$$$$$$$ \\$$$$$$  $$ |     $$ | \\$$$$  $$ |  $$ $$ | $$ | $$ |" << '\n'
+            << " \\______/ \\_______\\__|  \\__|\\_______| \\____/\\__|\\_______\\__|  \\__\\__|\\____$$ |\\______/\\__|     \\__|  \\____/\\__|  \\__\\__| \\__| \\__|" << '\n'
+            << "                                                                    $$\\   $$ |                                                    " << '\n'
+            << "                                                                    \\$$$$$$  |                                                    " << '\n'
+            << "                                                                     \\______/                           Formak21(c) version:" << ver << '\n'
             << "\n \n \n";
         std::cout << "Main Menu: \n* Input 0 to start GeneticAlgorithm   \n* Input 1 to exit";
 
@@ -349,19 +346,19 @@ int main(){
         best_qual_per_tick.prnt_txt(tmpp);
         worst_qual_per_tick.prnt_txt(tmpp);
         allbest_qual_per_tick.prnt_txt(tmpp);
-        avg_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].avg_qual());
-        best_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].best_qual());
-        worst_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].worst_qual());
-        allbest_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].best_qual_all);
+        avg_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].avg_qual()));
+        best_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].best_qual()));
+        worst_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].worst_qual()));
+        allbest_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].best_qual_all));
         while(cycle < popul_num){
             GeneticAlgorithms[i].slctn();
             GeneticAlgorithms[i].crsgv();
             GeneticAlgorithms[i].mtt();
             cycle++;
-            avg_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].avg_qual());
-            best_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].best_qual());
-            worst_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].worst_qual());
-            allbest_qual_per_tick.add_data(cycle, GeneticAlgorithms[i].best_qual_all);
+            avg_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].avg_qual()));
+            best_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].best_qual()));
+            worst_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].worst_qual()));
+            allbest_qual_per_tick.add_data(std::pair<size_t, size_t>(cycle, GeneticAlgorithms[i].best_qual_all));
         }
         BestFS.push_back({indv_len, GeneticAlgorithms[i].best_qual_all});
     }
