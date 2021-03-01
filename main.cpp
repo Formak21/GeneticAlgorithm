@@ -23,7 +23,9 @@ int main(){
     std::srand(time(nullptr));
     long long x0, y0;
     int a, b, c;
-    std::cin>>a>>b>>c;
+    size_t mk_sz=40, mk_ln=22, mk=1;
+    std::cout<<"a b c n m\nn%2==0; m%2==0; 5 < n < 127; 5 < m\n";
+    std::cin>>a>>b>>c>>mk_ln>>mk_sz;
     while (true) {
         if (c % gcd(a, b) == 0){
             break;
@@ -40,7 +42,6 @@ int main(){
 
     GA::Graph min_qualities("min_qualities");
     GA::Graph max_qualities("max_qualities");
-    size_t mk_sz=40, mk_ln=22, mk=1;
     char mk_rg=1;
     std::vector<GA::GeneticAlgorithm> GeneticAlgorithms(mk, GA::GeneticAlgorithm(mk_sz, mk_ln, mk_rg, a, b, c));
 
