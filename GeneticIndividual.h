@@ -22,14 +22,16 @@ namespace GA{
     struct GeneticIndividual{
         private:
             std::vector<char> individual;
+            const long long a, b, c;
             
         public:
-            GeneticIndividual(const size_t size);
+            GeneticIndividual(const size_t size, const long long mk_a, const long long mk_b, const long long mk_c);
             const size_t size;
             void gen_ind();
             void reverse_ind();
             void mutation(const char m_reg);
             long long unsigned quality_ind() const;
+            std::pair< long long, long long > x0y0() const; //debug
 
             bool operator< (const GeneticIndividual &r) const;
             bool operator> (const GeneticIndividual &r) const;
@@ -43,7 +45,8 @@ namespace GA{
 
     };
     
-    inline GeneticIndividual::GeneticIndividual(const size_t mk_sz) : individual(mk_sz, 0), size(mk_sz){
+    inline GeneticIndividual::GeneticIndividual(const size_t mk_ln, const long long mk_a, const long long mk_b, const long long mk_c) : individual(mk_ln, 0),
+    a(mk_a), b(mk_b), c(mk_c), size(mk_ln){
         gen_ind();
     }
 
@@ -107,9 +110,31 @@ namespace GA{
         if (y < 0 && x < std::numeric_limits< long long >::min() - y)
             throw std::range_error( "adding x and y causes underflow" );
 
-        return std::abs(3 - (x+y)) * 1LLU;
+        return std::abs(c - ((a*x)+(b*y))) * 1LLU;
     }
 
+    std::pair< long long, long long > GeneticIndividual::x0y0() const{
+        long long x=0, y=0;
+        for (size_t i = 1; i < size/2; ++i){
+            if (individual[i]){
+                x+=std::pow(2, i-1);
+            }
+
+            if (individual[i+(size/2)]){
+                y+=std::pow(2, i-1);
+            }
+        }
+
+        if (individual[0]){
+            x*=-1;
+        }
+
+        if (individual[size/2]){
+            y*=-1;
+        }
+
+        return std::make_pair(x, y);
+    }
 
     inline bool GeneticIndividual::operator< (const GeneticIndividual &r) const{
         return quality_ind() < r.quality_ind();

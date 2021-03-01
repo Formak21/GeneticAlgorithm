@@ -20,10 +20,9 @@ namespace GA{
             std::vector<GeneticIndividual> individuals;
             std::vector< std::pair< size_t, size_t > > selected_its;
             const char m_regulator;
-
         public:
             const size_t size;
-            GeneticAlgorithm(const size_t mk_sz, const size_t mk_ln, const char m_reg);
+            GeneticAlgorithm(const size_t mk_sz, const size_t mk_ln, const char mk_rg, const long long mk_a, const long long mk_b, const long long mk_c);
             void selection();
             void crossover();
             void mutation();
@@ -31,13 +30,13 @@ namespace GA{
             std::vector<long long unsigned> qualities() const;
             long long unsigned max_quality() const;
             long long unsigned min_quality() const;
+            std::pair< long long, long long > x0y0() const;
             friend std::ostream& operator<< (std::ostream &out, GeneticAlgorithm &r);
 
     };
 
-    GeneticAlgorithm::GeneticAlgorithm(const size_t mk_sz, const size_t mk_ln, const char mk_rg) :
-        individuals(mk_sz, GeneticIndividual(mk_ln)), selected_its(mk_sz),
-        m_regulator(mk_rg), size(mk_sz){regen(); selection();}
+    GeneticAlgorithm::GeneticAlgorithm(const size_t mk_sz, const size_t mk_ln, const char mk_rg, const long long mk_a, const long long mk_b, const long long mk_c) :
+        individuals(mk_sz, GeneticIndividual(mk_ln, mk_a, mk_b, mk_c)), selected_its(mk_sz), m_regulator(mk_rg), size(mk_sz){regen(); selection();}
 
     void GeneticAlgorithm::selection(){
         for (size_t i = 0; i < size; ++i){
@@ -136,6 +135,16 @@ namespace GA{
         }
 
         return quality;
+    }
+
+    std::pair< long long, long long > GeneticAlgorithm::x0y0() const{
+        size_t it=0;
+        for (size_t i = 0; i < size; ++i){
+            if (individuals[i].quality_ind() == 0){
+                it = i;
+            }
+        }
+        return individuals[it].x0y0();
     }
 
     std::ostream& operator<< (std::ostream &out, GeneticAlgorithm &r){
