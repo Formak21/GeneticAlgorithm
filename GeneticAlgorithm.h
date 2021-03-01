@@ -138,11 +138,15 @@ namespace GA{
     }
 
     std::pair< long long, long long > GeneticAlgorithm::x0y0() const{
-        size_t it=0;
+        size_t it;
         for (size_t i = 0; i < size; ++i){
             if (individuals[i].quality_ind() == 0){
                 it = i;
+                break;
             }
+        }
+        if (__is_empty(it)){
+            return std::make_pair(-1, -1);
         }
         return individuals[it].x0y0();
     }
