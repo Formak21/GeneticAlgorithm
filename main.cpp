@@ -4,7 +4,7 @@
 //
 //  Created by Alexandr Formakovskiy ( Form49.d ).
 //
-#define VERSION "3.0.1_LDE"
+#define VERSION "3.0.2_LDE"
 #include <iostream>
 #include <string>
 #include <utility>
@@ -63,16 +63,6 @@ int main(){
         y0 = i.x0y0().second;//debug
     }
     std::cout<<"Done!\n";
-
-    std::cout<<"x0 ="<<x0<<" y0="<<y0<<'\n';//debug
-    std::cout<<"x="<<x0<<"+k*"<<'('<<b<<'/'<<gcd(a,b)<<')';//debug
-    std::cout<<"y="<<y0<<"-k*"<<'('<<a<<'/'<<gcd(a,b)<<')';//debug
-
-    long long unsigned k;
-    std::cout<<"\nk:";
-    std::cin>>k;
-    for (long long unsigned i = 0; i < k; ++i){
-        std::cout<<'('<<x0+(i*(b/gcd(a,b)))<<';'<<y0+(-1*i*(a/gcd(a,b)))<<')'<<'\n';
-    }
+    std::cout<<"x0 ="<<x0<<" y0="<<y0<<'\n';
     return 0;
 }
