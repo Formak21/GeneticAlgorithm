@@ -32,7 +32,6 @@ namespace GA{
             void mutation(const char m_reg);
             long long unsigned quality_ind() const;
             std::pair< long long, long long > x0y0() const; //debug
-
             bool operator< (const GeneticIndividual &r) const;
             bool operator> (const GeneticIndividual &r) const;
             bool operator<= (const GeneticIndividual &r) const;
