@@ -34,9 +34,9 @@ if __name__ == '__main__':
     while True:
         TestGraph.add_point()
         print(f"\rCycle:{counter}", end='')
-        #print(f"Max:{Test.max_quality()}")
-        #print(f"Max:{Test.min_quality()}")
-        #print(f"Population:\n[{Test}]\n")
+        # print(f"Max:{Test.max_quality()}")
+        # print(f"Max:{Test.min_quality()}")
+        # print(f"Population:\n[{Test}]\n")
         if Test.max_quality() == answer:
             break
         Test.crossover()
@@ -45,4 +45,4 @@ if __name__ == '__main__':
         counter += 1
 
     TestGraph.open_graph()
-#print('Done!')
+# print('Done!')
