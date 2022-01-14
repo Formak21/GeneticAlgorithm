@@ -9,7 +9,6 @@ import Graph
 import plotly.express as px
 import pandas as pd
 
-
 VERSION = "4.X.XRePy_LDE"
 
 '''
@@ -28,16 +27,19 @@ class ModernGraph:
                        'max_quality': Graph.Graph('max_quality'),
                        'max_max_quality': Graph.Graph('max_max_quality'),
                        'avg_quality': Graph.Graph('avg_quality')}
-        self.points = {'min_quality': [0] * (self.population + 1),
-                       'max_quality': [0] * (self.population + 1),
-                       'max_max_quality': [0] * (self.population + 1),
-                       'avg_quality': [0] * (self.population + 1)}
+        self.points = {'min_quality': [] + [0] * self.population,
+                       'max_quality': [] + [0] * self.population,
+                       'max_max_quality': [] + [0] * self.population,
+                       'avg_quality': [] + [0] * self.population}
 
     def add_text(self, text):
         for key in self.Graphs.keys():
             self.Graphs[key].add_text(text)
 
     def add_point(self):
+        for key in self.points.keys():
+            self.points[key].append(0)
+
         self.points['min_quality'][self.population] = self.obj.min_quality()
         self.Graphs['min_quality'].add_point((self.population, self.points['min_quality'][self.population]))
 
@@ -51,13 +53,7 @@ class ModernGraph:
         self.Graphs['avg_quality'].add_point((self.population, self.points['avg_quality'][self.population]))
 
         self.population += 1
-        for key in self.points.keys():
-            self.points[key].append(0)
-
-    def save_graph(self, type_of_graph):
-        pass
 
     def open_graph(self):
         fig = px.line(self.points, y=pd.Index(self.points.keys(), dtype=str))
-        fig = px.line(x=list(range(0, self.population+1)), y=self.points['min_quality'])
         fig.show()

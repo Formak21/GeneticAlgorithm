@@ -1,7 +1,7 @@
 
-# GeneticAlgorithm Reloaded(v3.0.4)
-This algorithm is fully rewrited on c++. :)
+# GeneticAlgorithm RePy(v4.0.2)
+This algorithm is fully rewrited on Python. :)
 Algorithm is based on vector of struct instances.
 
 Last Update:
-version 3.0.4
+version 4.0.2

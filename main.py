@@ -9,7 +9,7 @@ import GeneticIndividual
 import GeneticAlgorithm
 import ModernGraph
 
-VERSION = "4.0.1RePy_LDE"
+VERSION = "4.0.2RePy_LDE"
 
 
 class AlterGenIndiv(GeneticIndividual.GeneticIndividual):
@@ -33,10 +33,10 @@ if __name__ == '__main__':
     TestGraph = ModernGraph.ModernGraph(Test, counter)
     while True:
         TestGraph.add_point()
-        print(f"Cycle:{counter}")
-        print(f"Max:{Test.max_quality()}")
-        print(f"Max:{Test.min_quality()}")
-        print(f"Population:\n[{Test}]\n")
+        print(f"\rCycle:{counter}", end='')
+        #print(f"Max:{Test.max_quality()}")
+        #print(f"Max:{Test.min_quality()}")
+        #print(f"Population:\n[{Test}]\n")
         if Test.max_quality() == answer:
             break
         Test.crossover()
@@ -45,4 +45,4 @@ if __name__ == '__main__':
         counter += 1
 
     TestGraph.open_graph()
-print('Done!')
+#print('Done!')
