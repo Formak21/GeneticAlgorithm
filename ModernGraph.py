@@ -10,7 +10,7 @@ import plotly
 import plotly.express as px
 import pandas as pd
 
-VERSION = "4.X.XRePy_LDE"
+VERSION = "4.0.2RePy_LDE"
 
 '''
 График минимумов 

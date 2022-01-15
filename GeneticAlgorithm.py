@@ -8,7 +8,7 @@
 import numpy
 import random
 
-VERSION = "4.X.XRePy_LDE"
+VERSION = "4.0.2RePy_LDE"
 
 
 class GeneticAlgorithm:
