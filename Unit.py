@@ -1,3 +1,5 @@
+import time
+
 import GeneticIndividual
 import GeneticAlgorithm
 import ModernGraph
@@ -19,11 +21,23 @@ def json_export(var):
 if __name__ == '__main__':
     Configuration = json_import()
     con = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    con.settimeout(6)
-    con.connect((Configuration['IP'], Configuration['PORT']))
+    temp = 1
+    while temp:
+        try:
+            con.connect((Configuration['IP'], int(Configuration['PORT'])))
+            temp -= 1
+        except:
+            time.sleep(5)
+            temp += 1
     con.send('Connected.'.encode('utf-8'))
-    Parameters = json.loads(con.recv(32768).decode('utf-8'))
+    Parameters = None
+    while Parameters is None:
+        try:
+            Parameters = json.loads(con.recv(32768).decode('utf-8'))
+        except:
+            time.sleep(5)
     # size, leng, iters, m_reg, func
+    open('func.py', 'w', encoding='utf-8').close()
     with open('func.py', 'w', encoding='utf-8') as f:
         f.write(Parameters['func'])
 
@@ -38,4 +52,22 @@ if __name__ == '__main__':
                                                CustomGeneticIndividual)
     counter = 0
     GenAlgGraph = ModernGraph.ModernGraph(GenAlg, counter)
-    
+
+    temp = None
+    while temp != 'START':
+        try:
+            temp = con.recv(256).decode('utf-8')
+        except:
+            time.sleep(5)
+
+    while counter != Parameters['iter']:
+        GenAlgGraph.add_point()
+        GenAlg.crossover()
+        GenAlg.mutation()
+        GenAlg.selection()
+        counter += 1
+
+    GenAlgGraph.save_graph()
+
+
+
