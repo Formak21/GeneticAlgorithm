@@ -26,23 +26,23 @@ class AlterGenIndiv(GeneticIndividual.GeneticIndividual):
 
 if __name__ == '__main__':
     size = int(input('how many individuals:'))
-    answer = leng = int(input('how many genes in one individual:'))
+    leng = int(input('how many genes in one individual:'))
     m_reg = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
     Test = GeneticAlgorithm.GeneticAlgorithm(size, leng, m_reg, GeneticIndividual.GeneticIndividual)
     counter = 0
     TestGraph = ModernGraph.ModernGraph(Test, counter)
     while True:
         TestGraph.add_point()
-        print(f"\rCycle:{counter}", end='')
+        # print(f"\rCycle:{counter}", end='')
         # print(f"Max:{Test.max_quality()}")
         # print(f"Max:{Test.min_quality()}")
         # print(f"Population:\n[{Test}]\n")
-        if Test.max_quality() == answer:
+        if Test.max_quality() == leng:
             break
         Test.crossover()
         Test.mutation()
         Test.selection()
         counter += 1
 
+    print('Done!')
     TestGraph.open_graph()
-# print('Done!')

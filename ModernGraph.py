@@ -6,6 +6,7 @@
 #
 
 import Graph
+import plotly
 import plotly.express as px
 import pandas as pd
 
@@ -57,3 +58,8 @@ class ModernGraph:
     def open_graph(self):
         fig = px.line(self.points, y=pd.Index(self.points.keys(), dtype=str))
         fig.show()
+
+    def save_graph(self):
+        fig = px.line(self.points, y=pd.Index(self.points.keys(), dtype=str))
+        fig.write_image("Graphs/LastGraph.png")
+        plotly.offline.plot(fig, filename='Graphs/LastGraph.html')
