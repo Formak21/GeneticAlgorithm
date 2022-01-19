@@ -4,6 +4,7 @@
 #
 #  Created by Alexandr Formakovskiy ( Form49.d ).
 #
+import datetime
 
 import GeneticIndividual
 import GeneticAlgorithm
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     counter = 0
     TestGraph = ModernGraph.ModernGraph(Test, counter)
     iters = int(input('how many iterations:'))
+    Started = datetime.datetime.now()
     while True:
         TestGraph.add_point()
         # print(f"\rCycle:{counter}", end='')
@@ -40,6 +42,10 @@ if __name__ == '__main__':
         # print(f"Population:\n[{Test}]\n")
         if counter == iters:
             print('Done!')
+            print(f'Started:{Started.strftime("%d.%m.%y-%H:%M:%S")}')
+            print(f'Ended:{datetime.datetime.now().strftime("%d.%m.%y-%H:%M:%S")}')
+            print(f'Delta seconds:{(datetime.datetime.now()-Started).seconds}')
+            print()
             TestGraph.open_graph()
             if not bool(int(input('Continue? 0/1:'))):
                 break
