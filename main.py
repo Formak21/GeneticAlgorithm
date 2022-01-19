@@ -31,18 +31,21 @@ if __name__ == '__main__':
     Test = GeneticAlgorithm.GeneticAlgorithm(size, leng, m_reg, GeneticIndividual.GeneticIndividual)
     counter = 0
     TestGraph = ModernGraph.ModernGraph(Test, counter)
+    iters = int(input('how many iterations:'))
     while True:
         TestGraph.add_point()
         # print(f"\rCycle:{counter}", end='')
         # print(f"Max:{Test.max_quality()}")
         # print(f"Max:{Test.min_quality()}")
         # print(f"Population:\n[{Test}]\n")
-        if Test.max_quality() == leng:
-            break
+        if counter == iters:
+            print('Done!')
+            TestGraph.open_graph()
+            if not bool(int(input('Continue? 0/1:'))):
+                break
+            iters += int(input(f'now {counter} iterations left, how many more iterations:'))
         Test.crossover()
         Test.mutation()
         Test.selection()
         counter += 1
 
-    print('Done!')
-    TestGraph.open_graph()
