@@ -48,5 +48,3 @@ if __name__ == '__main__':
         Test.mutation()
         Test.selection()
         counter += 1
-
-# this is test comit
