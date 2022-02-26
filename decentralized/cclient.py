@@ -1,8 +1,10 @@
 import socket
 import json
+import time
 
 
 def f(n) -> int:
+    time.sleep(10)  # И.Б.Д.
     return sum(n)
 
 
@@ -13,4 +15,4 @@ while True:
     data = json.loads(data)
     data = f(data)
     connection.send(f'{data}'.encode('utf-8'))
-    #print(f'Data sent:{data}')
+    # print(f'Data sent:{data}')

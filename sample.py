@@ -5,6 +5,7 @@
 #  Created by Alexandr Formakovskiy ( Form49.d ).
 #
 import datetime
+import time
 import sys
 sys.path.append('lib')
 import GeneticIndividual
@@ -16,21 +17,15 @@ VERSION = "4.0.2RePy_LDE"
 
 class AlterGenIndiv(GeneticIndividual.GeneticIndividual):
     def quality_ind(self):
-        qual = 0
-        for i in range(self.SIZE // 2):
-            if self.individual[i]:
-                qual += 1
-        for i in range(self.SIZE // 2, self.SIZE):
-            if not self.individual[i]:
-                qual += 1
-        return qual
+        time.sleep(10)  # И.Б.Д.
+        return super().quality_ind()
 
 
 if __name__ == '__main__':
     size = int(input('how many individuals:'))
     leng = int(input('how many genes in one individual:'))
     m_reg = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
-    Test = GeneticAlgorithm.GeneticAlgorithm(size, leng, m_reg, GeneticIndividual.GeneticIndividual)
+    Test = GeneticAlgorithm.GeneticAlgorithm(size, leng, m_reg, AlterGenIndiv)
     counter = 0
     TestGraph = ModernGraph.ModernGraph(Test, counter)
     iters = int(input('how many iterations:'))
