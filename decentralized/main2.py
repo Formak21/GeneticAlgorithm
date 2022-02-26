@@ -90,6 +90,7 @@ if __name__ == '__main__':
             print(f'Delta seconds:{(datetime.datetime.now() - Started).seconds}')
             print()
             GaGraph.open_graph()
+            print(Ga)
             if not bool(int(input('Continue? 0/1:'))):
                 break
             iters += int(input(f'now {counter} iterations left, how many more iterations:'))
