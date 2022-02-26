@@ -7,7 +7,7 @@ def f(n) -> int:
 
 
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connection.connect(('192.168.88.246', 12333))
+connection.connect(('192.168.88.246', 25566))
 while True:
     data = connection.recv(32768).decode('utf-8')
     print(data)
