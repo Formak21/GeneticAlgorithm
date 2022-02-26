@@ -32,7 +32,7 @@ if __name__ == '__main__':
     class DefaultGA(GeneticAlgorithm.GeneticAlgorithm):
         def quality_update(self):  # VERY SLOW FUNCTION, PLS DON'T CALL IT IF IT NO NEEDED
             for i in range(self.SIZE):
-                self.individuals.quality = f([int(i) for i in self.individuals[i].individual])
+                self.individuals[i].quality = f([int(i) for i in self.individuals[i].individual])
 
 
     size = int(input('how many individuals:'))
