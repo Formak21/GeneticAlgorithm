@@ -4,7 +4,7 @@ import time
 
 
 def f(n) -> int:
-    time.sleep(10)  # И.Б.Д.
+    time.sleep(1)  # И.Б.Д.
     return sum(n)
 
 

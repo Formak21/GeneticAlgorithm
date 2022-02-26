@@ -17,7 +17,7 @@ VERSION = "4.0.2RePy_LDE"
 
 class AlterGenIndiv(GeneticIndividual.GeneticIndividual):
     def quality_ind(self):
-        time.sleep(10)  # И.Б.Д.
+        time.sleep(1)  # И.Б.Д.
         return super().quality_ind()
 
 
