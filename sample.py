@@ -6,7 +6,7 @@
 #
 import datetime
 import sys
-sys.path.append('../lib')
+sys.path.append('lib')
 import GeneticIndividual
 import GeneticAlgorithm
 import ModernGraph
