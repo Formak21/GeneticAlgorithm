@@ -35,6 +35,7 @@ if __name__ == '__main__':
     iters = int(input('how many iterations:'))
     Started = datetime.datetime.now()
     while True:
+        Test.selection()
         TestGraph.add_point()
         # print(f"\rCycle:{counter}", end='')
         # print(f"Max:{Test.max_quality()}")
@@ -52,5 +53,4 @@ if __name__ == '__main__':
             iters += int(input(f'now {counter} iterations left, how many more iterations:'))
         Test.crossover()
         Test.mutation()
-        Test.selection()
         counter += 1

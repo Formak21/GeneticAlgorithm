@@ -23,7 +23,6 @@ class GeneticAlgorithm:
             self.selected_its.append((int(), int()))
         self.individuals = numpy.array(self.individuals, dtype=geneticindividual)
         self.selected_its = numpy.array(self.selected_its, dtype=tuple)
-        self.selection()
 
     def regen(self):
         for i in range(0, self.SIZE):

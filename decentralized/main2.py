@@ -23,7 +23,7 @@ if __name__ == '__main__':
     listener.listen(1)
 
 
-    def ConnectMachine(n):
+    def connect_machine(n):
         print(f'Waiting for machine no{n}...')
         machine = listener.accept()
         print(f'Machine No{n} Successfully connected. ')
@@ -31,15 +31,15 @@ if __name__ == '__main__':
 
 
     machines = int(input('how many machines:'))
-    Connected_Machines = [{'Machine': ConnectMachine(i), 'Status': 0, 'Data': -1} for i in range(machines)]
+    Connected_Machines = [{'Machine': connect_machine(i), 'Status': 0, 'Data': -1} for i in range(machines)]
 
 
     class NetworkGI(GeneticIndividual.GeneticIndividual):
-        def __init__(self, size):
-            super().__init__(size)
+        def __init__(self, sz):
+            super().__init__(sz)
             self.quality = None
-           
-        def quality_ind():
+
+        def quality_ind(self):
             return self.quality
 
 
@@ -60,11 +60,12 @@ if __name__ == '__main__':
                     Connected_Machines[machine_number]['Status'] = 1
                     wait.append(queue.pop(0))
                     Connected_Machines[machine_number]['Data'] = wait[-1]
-                    Data_for_send = json.dumps([int(i) for i in
+                    data_for_send = json.dumps([int(i) for i in
                                                 self.individuals[
                                                     Connected_Machines[machine_number]['Data']].individual])
-                    Connected_Machines[machine_number]['Machine'][0].send(Data_for_send.encode("utf-8"))
+                    Connected_Machines[machine_number]['Machine'][0].send(data_for_send.encode("utf-8"))
                 machine_number = (machine_number + 1) % machines
+
 
     size = int(input('how many individuals:'))
     leng = int(input('how many genes in one individual:'))
@@ -76,6 +77,7 @@ if __name__ == '__main__':
     Started = datetime.datetime.now()
     while True:
         Ga.quality_update()
+        Ga.selection()
         GaGraph.add_point()
         # print(f"\rCycle:{counter}", end='')
         # print(f"Max:{Test.max_quality()}")
@@ -93,5 +95,4 @@ if __name__ == '__main__':
             iters += int(input(f'now {counter} iterations left, how many more iterations:'))
         Ga.crossover()
         Ga.mutation()
-        Ga.selection()
         counter += 1
