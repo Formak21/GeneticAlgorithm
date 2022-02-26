@@ -19,7 +19,7 @@ VERSION = "4.0.3RePy_NET"
 if __name__ == '__main__':
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    listener.bind(('127.0.0.1', 12333))
+    listener.bind(('192.168.88.246', 25566))
     listener.listen(1)
 
 
@@ -36,8 +36,11 @@ if __name__ == '__main__':
 
     class NetworkGI(GeneticIndividual.GeneticIndividual):
         def __init__(self, size):
-            super().__init(size)
-            self.quality_ind = None
+            super().__init__(size)
+            self.quality = None
+           
+        def quality_ind():
+            return self.quality
 
 
     class NetworkGA(GeneticAlgorithm.GeneticAlgorithm):
@@ -48,7 +51,7 @@ if __name__ == '__main__':
             machine_number = 0
             while len(queue) or len(wait):
                 if Connected_Machines[machine_number]['Status'] == 1:
-                    self.individuals[Connected_Machines[machine_number]['Data']].quality_ind = int(
+                    self.individuals[Connected_Machines[machine_number]['Data']].quality = int(
                         Connected_Machines[machine_number]['Machine'][0].recv(32768).decode('utf-8'))
                     wait.remove(Connected_Machines[machine_number]['Data'])
                     Connected_Machines[machine_number]['Status'] = 0
