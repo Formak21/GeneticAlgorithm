@@ -13,4 +13,4 @@ while True:
     data = json.loads(data)
     data = f(data)
     connection.send(f'{data}'.encode('utf-8'))
-    print(f'Data sent:{data}')
+    #print(f'Data sent:{data}')
