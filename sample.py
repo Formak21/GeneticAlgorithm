@@ -5,7 +5,7 @@
 #  Created by Alexandr Formakovskiy ( Form49.d ).
 #
 import datetime
-
+import sys
 sys.path.append('../lib')
 import GeneticIndividual
 import GeneticAlgorithm
