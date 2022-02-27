@@ -35,7 +35,7 @@ if __name__ == '__main__':
         ga.quality_update()
         ga.selection()
         ga_graph.add_point()
-        if population == population_quantity:
+        if population >= population_quantity:
             print('Done!')
             print(f'Started:{Started.strftime("%d.%m.%y-%H:%M:%S")}')
             print(f'Ended:{datetime.datetime.now().strftime("%d.%m.%y-%H:%M:%S")}')
