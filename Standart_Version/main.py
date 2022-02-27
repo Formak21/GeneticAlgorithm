@@ -30,7 +30,7 @@ if __name__ == '__main__':
     ga_graph = Mg.ModernGraph(ga, population)
     population_quantity = int(input('how many iterations:'))
     Started = datetime.datetime.now()
-    
+
     while True:
         ga.quality_update()
         ga.selection()
