@@ -7,7 +7,7 @@
 
 import datetime
 
-VERSION = "4.0.2RePy_LDE"
+VERSION = "4.1.0RePy"
 
 
 class Graph:

@@ -70,9 +70,9 @@ class GeneticAlgorithm:
         return quality
 
     def max_quality(self):
-        quality = 0
+        quality = None
         for i in range(self.SIZE):
-            if quality < self.individuals[i].quality:
+            if quality is None or quality < self.individuals[i].quality:
                 quality = self.individuals[i].quality
         return quality
 
