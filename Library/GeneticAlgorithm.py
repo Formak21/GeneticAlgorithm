@@ -12,17 +12,22 @@ VERSION = "4.0.2RePy_LDE"
 
 
 class GeneticAlgorithm:
-    def __init__(self, size, leng, m_reg, geneticindividual):
+    def __init__(self, size, leng, m_reg, IndividualClass, f):
         self.SIZE = size
         self.LENG = leng
         self.m_reg = m_reg
         self.individuals = []
         self.selected_its = []
         for _ in range(self.SIZE):
-            self.individuals.append(geneticindividual(self.LENG))
+            self.individuals.append(IndividualClass(self.LENG))
             self.selected_its.append((int(), int()))
-        self.individuals = numpy.array(self.individuals, dtype=geneticindividual)
+        self.individuals = numpy.array(self.individuals, dtype=IndividualClass)
         self.selected_its = numpy.array(self.selected_its, dtype=tuple)
+        self.f = f
+
+    def quality_update(self):  # VERY SLOW FUNCTION, PLS DON'T CALL IT IF IT NO NEEDED
+        for i in range(self.SIZE):
+            self.individuals[i].quality = self.f([int(i) for i in self.individuals[i].individual])
 
     def regen(self):
         for i in range(0, self.SIZE):
@@ -61,23 +66,21 @@ class GeneticAlgorithm:
     def qualities(self) -> list:
         quality = []
         for i in range(self.SIZE):
-            quality.append(self.individuals[i].quality_ind())
+            quality.append(self.individuals[i].quality)
         return quality
 
     def max_quality(self):
         quality = 0
         for i in range(self.SIZE):
-            tmp = self.individuals[i].quality_ind()  # iteration economy :)
-            if quality < tmp:
-                quality = tmp
+            if quality < self.individuals[i].quality:
+                quality = self.individuals[i].quality
         return quality
 
     def min_quality(self):
         quality = None
         for i in range(self.SIZE):
-            tmp = self.individuals[i].quality_ind()  # iteration economy :)
-            if quality is None or quality > tmp:
-                quality = tmp
+            if quality is None or quality > self.individuals[i].quality:
+                quality = self.individuals[i].quality
         return quality
 
     def __str__(self):

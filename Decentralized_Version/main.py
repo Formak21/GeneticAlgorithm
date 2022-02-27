@@ -1,5 +1,5 @@
 #
-#  main2.py
+#  main.py
 #  GeneticAlgorithm main2
 #
 #  Created by Alexandr Formakovskiy ( Form49.d ).
@@ -7,16 +7,15 @@
 import datetime
 import socket
 import json
-import sys
 
-sys.path.append('../lib')
-import GeneticIndividual
-import GeneticAlgorithm
-import ModernGraph
+from Library import GeneticIndividual as Gi
+from Library import GeneticAlgorithm as Ga
+from Library import ModernGraph as Mg
 
-VERSION = "4.0.3RePy_NET"
+VERSION = "4.1.0RePy_NET"
 
 if __name__ == '__main__':
+
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     listener.bind(('192.168.88.246', 25566))
@@ -34,16 +33,10 @@ if __name__ == '__main__':
     Connected_Machines = [{'Machine': connect_machine(i), 'Status': 0, 'Data': -1} for i in range(machines)]
 
 
-    class NetworkGI(GeneticIndividual.GeneticIndividual):
-        def __init__(self, sz):
-            super().__init__(sz)
-            self.quality = None
+    class NetworkGA(Ga.GeneticAlgorithm):
+        def __init__(self, size, leng, m_reg, IndividualClass):
+            super(NetworkGA, self).__init__(size, leng, m_reg, IndividualClass, None)
 
-        def quality_ind(self):
-            return self.quality
-
-
-    class NetworkGA(GeneticAlgorithm.GeneticAlgorithm):
         def quality_update(self):  # VERY SLOW FUNCTION, PLS DON'T CALL IT IF IT NO NEEDED
             global Connected_Machines
             queue = [i for i in range(self.SIZE)]
@@ -51,7 +44,7 @@ if __name__ == '__main__':
             machine_number = 0
             while len(queue) or len(wait):
                 if Connected_Machines[machine_number]['Status'] == 1:
-                    self.individuals[Connected_Machines[machine_number]['Data']].quality = int(
+                    self.individuals[Connected_Machines[machine_number]['Data']].quality = float(
                         Connected_Machines[machine_number]['Machine'][0].recv(32768).decode('utf-8'))
                     wait.remove(Connected_Machines[machine_number]['Data'])
                     Connected_Machines[machine_number]['Status'] = 0
@@ -67,32 +60,29 @@ if __name__ == '__main__':
                 machine_number = (machine_number + 1) % machines
 
 
-    size = int(input('how many individuals:'))
-    leng = int(input('how many genes in one individual:'))
-    m_reg = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
-    Ga = NetworkGA(size, leng, m_reg, NetworkGI)
-    counter = 0
-    GaGraph = ModernGraph.ModernGraph(Ga, counter)
-    iters = int(input('how many iterations:'))
+    individuals_quantity = int(input('how many individuals:'))
+    gene_quantity = int(input('how many genes in one individual:'))
+    mutation_mode = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
+    ga = NetworkGA(individuals_quantity, gene_quantity, mutation_mode, Gi.GeneticIndividual)
+    population = 0
+    ga_graph = Mg.ModernGraph(ga, population)
+    population_quantity = int(input('how many iterations:'))
     Started = datetime.datetime.now()
+
     while True:
-        Ga.quality_update()
-        Ga.selection()
-        GaGraph.add_point()
-        # print(f"\rCycle:{counter}", end='')
-        # print(f"Max:{Test.max_quality()}")
-        # print(f"Max:{Test.min_quality()}")
-        # print(f"Population:\n[{Test}]\n")
-        if counter == iters:
+        ga.quality_update()
+        ga.selection()
+        ga_graph.add_point()
+        if population == population_quantity:
             print('Done!')
             print(f'Started:{Started.strftime("%d.%m.%y-%H:%M:%S")}')
             print(f'Ended:{datetime.datetime.now().strftime("%d.%m.%y-%H:%M:%S")}')
             print(f'Delta seconds:{(datetime.datetime.now() - Started).seconds}')
             print()
-            GaGraph.open_graph()
+            ga_graph.open_graph()
             if not bool(int(input('Continue? 0/1:'))):
                 break
-            iters += int(input(f'now {counter} iterations left, how many more iterations:'))
-        Ga.crossover()
-        Ga.mutation()
-        counter += 1
+            population_quantity += int(input(f'now {population} iterations left, how many more iterations:'))
+        ga.crossover()
+        ga.mutation()
+        population += 1

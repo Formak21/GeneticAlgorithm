@@ -10,7 +10,7 @@ import plotly
 import plotly.express as px
 import pandas as pd
 
-VERSION = "4.0.2RePy_LDE"
+VERSION = "4.1.0RePy"
 
 '''
 График минимумов 
@@ -50,7 +50,7 @@ class ModernGraph:
         self.Graphs['max_max_quality'].add_point((self.population, self.points['max_max_quality'][self.population]))
 
         temp = self.obj.qualities()
-        self.points['avg_quality'][self.population] = sum(temp) // len(temp)
+        self.points['avg_quality'][self.population] = sum(temp) / len(temp)
         self.Graphs['avg_quality'].add_point((self.population, self.points['avg_quality'][self.population]))
 
         self.population += 1

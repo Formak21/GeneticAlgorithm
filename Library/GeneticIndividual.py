@@ -9,12 +9,13 @@ import random
 import numpy
 import copy
 
-VERSION = "4.0.2RePy_LDE"
+VERSION = "4.1.0RePy"
 
 
 class GeneticIndividual:
     def __init__(self, size):
         self.SIZE = size
+        self.quality = int()
         self.individual = numpy.array([False] * self.SIZE, dtype=bool)
         self.gen_ind()
 
@@ -38,15 +39,8 @@ class GeneticIndividual:
             raise ("m_reg error.")
 
         for i in range(0, self.SIZE):
-            if random.randint(0, 100) / 100 < mt_prb:
+            if (random.randint(0, 100) / 100) < mt_prb:
                 self.individual[i] = not self.individual[i]
-
-    def quality_ind(self):
-        qual = 0
-        for i in self.individual:
-            if i:
-                qual += 1
-        return qual
 
     def copy(self):
         return copy.deepcopy(self)
@@ -54,27 +48,27 @@ class GeneticIndividual:
     def __lt__(self, other) -> bool:  # <
         if type(other) != type(self):
             raise ("GENETICINDIVIDUAL COMPARISON ERROR, YOU CAN COMPARE ONLY GENINDIVS.")
-        return self.quality_ind() < other.quality_ind()
+        return self.quality < other.quality
 
     def __gt__(self, other) -> bool:  # >
         if type(other) != type(self):
             raise ("GENETICINDIVIDUAL COMPARISON ERROR, YOU CAN COMPARE ONLY GENINDIVS.")
-        return self.quality_ind() > other.quality_ind()
+        return self.quality > other.quality
 
     def __le__(self, other) -> bool:  # <=
         if type(other) != type(self):
             raise ("GENETICINDIVIDUAL COMPARISON ERROR, YOU CAN COMPARE ONLY GENINDIVS.")
-        return self.quality_ind() <= other.quality_ind()
+        return self.quality <= other.quality
 
     def __ge__(self, other) -> bool:  # >=
         if type(other) != type(self):
             raise ("GENETICINDIVIDUAL COMPARISON ERROR, YOU CAN COMPARE ONLY GENINDIVS.")
-        return self.quality_ind() >= other.quality_ind()
+        return self.quality >= other.quality
 
     def __eq__(self, other) -> bool:  # ==
         if type(other) != type(self):
             raise ("GENETICINDIVIDUAL COMPARISON ERROR, YOU CAN COMPARE ONLY GENINDIVS.")
-        return self.quality_ind() == other.quality_ind()
+        return self.quality == other.quality
 
     def __ne__(self, other) -> bool:  # != for checking equal individs (NOT QUAL LIKE OTHER COMPARISONS)
         if type(other) != type(self):
