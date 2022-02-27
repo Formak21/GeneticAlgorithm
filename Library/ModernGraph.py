@@ -5,7 +5,7 @@
 #  Created by Alexandr Formakovskiy ( Form49.d ).
 #
 
-import Graph
+from Library import Graph
 import plotly
 import plotly.express as px
 import pandas as pd
