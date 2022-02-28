@@ -4,11 +4,15 @@
 #
 #  Created by Alexandr Formakovskiy ( Form49.d ).
 #
+import numpy
 
 from Library import Graph
 import plotly
 import plotly.express as px
+import matplotlib.pyplot as plt
+from matplotlib import cm
 import pandas as pd
+import time
 
 VERSION = "4.1.0RePy"
 
@@ -57,23 +61,34 @@ class ModernGraph:
         self.Graphs['avg_quality'].add_point((self.population, self.points['avg_quality'][self.population]))
 
         self.points['time_quality'][self.population] = (
-                self.obj.exec_time['Ended'] - self.obj.exec_time['Started']).microseconds
+                self.obj.exec_time['Ended'] - self.obj.exec_time['Started']).microseconds/1000
         self.Graphs['time_quality'].add_point((self.population, self.points['time_quality'][self.population]))
 
         self.population += 1
 
     def open_graph(self):
         fig = px.line(self.points, y=pd.Index([i for i in self.points.keys() if i != 'time_quality'], dtype=str))
-        # fig2 = px.scatter_3d(self.points, y=pd.Index([i for i in self.points.keys() if i != 'time_quality'], dtype=str),
-        #                     z=pd.Index(['time_quality'] * 4, dtype=str))
         fig.show()
-        # time.sleep(2)
-        # fig2.show()
+        time.sleep(2)
+        fig = px.line(self.points, y=pd.Index(['time_quality'], dtype=str))
+        fig.show()
+        time.sleep(2)
+
+        fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
+
+        X = list(range(self.population))
+        Y = self.points['max_quality']
+        Z = self.points['time_quality']
+        X, Y = numpy.meshgrid(X, Y)
+        Z = X**2 + Y**2
+        surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, linewidth=0)
+        plt.show()
+
 
     def save_graph(self):
         fig = px.line(self.points, y=pd.Index(self.points.keys(), dtype=str))
-        # fig2 = px.scatter_3d(self.points, y=pd.Index([i for i in self.points.keys() if i != 'time_quality'], dtype=str),
-        #                     z=pd.Index(['time_quality'] * 4, dtype=str))
         fig.write_image("Graphs/LastGraph.png")
-        # fig2.write_image("Graphs/Last2Graph.png")
         plotly.offline.plot(fig, filename='Graphs/LastGraph.html')
+        fig = px.line(self.points, y=pd.Index(['time_quality'], dtype=str))
+        fig.write_image("Graphs/Last2Graph.png")
+        plotly.offline.plot(fig, filename='Graphs/Last2Graph.html')
