@@ -17,6 +17,7 @@ VERSION = "4.1.0RePy"
 График максимумов
 График средних
 График максимального максимума
+График времени вычисления функции к популяции
 '''
 
 
@@ -27,11 +28,13 @@ class ModernGraph:
         self.Graphs = {'min_quality': Graph.Graph('min_quality'),
                        'max_quality': Graph.Graph('max_quality'),
                        'max_max_quality': Graph.Graph('max_max_quality'),
-                       'avg_quality': Graph.Graph('avg_quality')}
+                       'avg_quality': Graph.Graph('avg_quality'),
+                       'time_quality': Graph.Graph('time_quality')}
         self.points = {'min_quality': [] + [0] * self.population,
                        'max_quality': [] + [0] * self.population,
                        'max_max_quality': [] + [0] * self.population,
-                       'avg_quality': [] + [0] * self.population}
+                       'avg_quality': [] + [0] * self.population,
+                       'time_quality': [] + [0] * self.population}
 
     def add_text(self, text):
         for key in self.Graphs.keys():
@@ -53,13 +56,24 @@ class ModernGraph:
         self.points['avg_quality'][self.population] = sum(temp) / len(temp)
         self.Graphs['avg_quality'].add_point((self.population, self.points['avg_quality'][self.population]))
 
+        self.points['time_quality'][self.population] = (
+                self.obj.exec_time['Ended'] - self.obj.exec_time['Started']).microseconds
+        self.Graphs['time_quality'].add_point((self.population, self.points['time_quality'][self.population]))
+
         self.population += 1
 
     def open_graph(self):
-        fig = px.line(self.points, y=pd.Index(self.points.keys(), dtype=str))
+        fig = px.line(self.points, y=pd.Index([i for i in self.points.keys() if i != 'time_quality'], dtype=str))
+        # fig2 = px.scatter_3d(self.points, y=pd.Index([i for i in self.points.keys() if i != 'time_quality'], dtype=str),
+        #                     z=pd.Index(['time_quality'] * 4, dtype=str))
         fig.show()
+        # time.sleep(2)
+        # fig2.show()
 
     def save_graph(self):
         fig = px.line(self.points, y=pd.Index(self.points.keys(), dtype=str))
+        # fig2 = px.scatter_3d(self.points, y=pd.Index([i for i in self.points.keys() if i != 'time_quality'], dtype=str),
+        #                     z=pd.Index(['time_quality'] * 4, dtype=str))
         fig.write_image("Graphs/LastGraph.png")
+        # fig2.write_image("Graphs/Last2Graph.png")
         plotly.offline.plot(fig, filename='Graphs/LastGraph.html')

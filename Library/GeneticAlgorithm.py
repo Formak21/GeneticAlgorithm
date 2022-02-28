@@ -7,8 +7,9 @@
 
 import numpy
 import random
+import datetime
 
-VERSION = "4.0.2RePy_LDE"
+VERSION = "4.1.0RePy"
 
 
 class GeneticAlgorithm:
@@ -24,10 +25,13 @@ class GeneticAlgorithm:
         self.individuals = numpy.array(self.individuals, dtype=IndividualClass)
         self.selected_its = numpy.array(self.selected_its, dtype=tuple)
         self.f = f
+        self.exec_time = {'Started': datetime.datetime.now(), 'Ended': datetime.datetime.now()}
 
     def quality_update(self):  # VERY SLOW FUNCTION, PLS DON'T CALL IT IF IT NO NEEDED
+        self.exec_time['Started'] = datetime.datetime.now()
         for i in range(self.SIZE):
             self.individuals[i].quality = self.f([int(i) for i in self.individuals[i].individual])
+        self.exec_time['Ended'] = datetime.datetime.now()
 
     def regen(self):
         for i in range(0, self.SIZE):

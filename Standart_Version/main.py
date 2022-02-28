@@ -19,7 +19,6 @@ from Test_Functions import TestFunction5
 
 VERSION = "4.1.0RePy"
 
-
 if __name__ == '__main__':
 
     individuals_quantity = int(input('how many individuals:'))
