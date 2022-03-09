@@ -22,7 +22,7 @@ while True:
     GM = main.GeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction6, data)
     GM.run(False)
     Data1 = [[int(i) for i in GM.solutions[0].individual], GM.solutions[0].quality,
-             GM.deltas[0].microseconds / 1000, GM.es[0]]
+             GM.deltas[0], GM.es[0]]
     Data2 = GM.grs[0].points
     connection.send(json.dumps(Data1).encode('utf-8'))
     connection.recv(512)
