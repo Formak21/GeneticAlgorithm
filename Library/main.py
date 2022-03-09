@@ -42,6 +42,7 @@ class GeneticMain:
                 # self.population_quantity += int(input(f'now {population} iterations left, how many more iterations:'))
                 self.solutions.append(ga.best_solution)
                 self.es.append(ga_graph.return_e(population))
+                ga_graph.obj = None # garbage collector should destroy ga
                 self.grs.append(ga_graph)
                 self.deltas.append(datetime.datetime.now() - Started)
                 break
