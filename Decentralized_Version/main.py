@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    listener.bind(('192.168.88.246', 25566))
+    listener.bind(('127.0.0.1', 25566))
     listener.listen(1)
 
 
@@ -38,6 +38,7 @@ if __name__ == '__main__':
             super(NetworkGA, self).__init__(size, leng, m_reg, IndividualClass, None)
 
         def quality_update(self):  # VERY SLOW FUNCTION, PLS DON'T CALL IT IF IT NO NEEDED
+            self.exec_time['Started'] = datetime.datetime.now()
             global Connected_Machines
             queue = [i for i in range(self.SIZE)]
             wait = []
@@ -58,6 +59,7 @@ if __name__ == '__main__':
                                                     Connected_Machines[machine_number]['Data']].individual])
                     Connected_Machines[machine_number]['Machine'][0].send(data_for_send.encode("utf-8"))
                 machine_number = (machine_number + 1) % machines
+            self.exec_time['Ended'] = datetime.datetime.now()
 
 
     individuals_quantity = int(input('how many individuals:'))
