@@ -30,7 +30,7 @@ if __name__ == '__main__':
                           [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
     Started = datetime.datetime.now()
     GM.run_n_times(12)
-    print(f'global delta ={(datetime.datetime.now() - Started).microseconds / 1000} microseconds/1000')
+    print(f'global delta ={(datetime.datetime.now() - Started) / datetime.timedelta(milliseconds=1)}')
     print(f'E={GM.return_e()}')
 
     print('Data:')
