@@ -26,7 +26,7 @@ VERSION = "4.1.0RePy"
 if __name__ == '__main__':
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    listener.bind(('127.0.0.1', 25566))
+    listener.bind(('192.168.88.246', 25566))
     listener.listen(1)
 
 
@@ -48,7 +48,9 @@ if __name__ == '__main__':
             machine_number = 0
             while len(queue) or len(wait):
                 if Connected_Machines[machine_number]['Status'] == 1:
-                    data = json.loads(Connected_Machines[machine_number]['Machine'][0].recv(65536).decode('utf-8'))
+                    data = Connected_Machines[machine_number]['Machine'][0].recv(65536).decode('utf-8')
+                    data = json.loads(data)
+                    Connected_Machines[machine_number]['Machine'][0].send('1'.encode("utf-8"))
                     self.solutions.append(self.GI(self.gene_quantity, data[0]))
                     self.solutions[-1].quality = data[1]
                     self.deltas.append(data[2])
@@ -67,6 +69,7 @@ if __name__ == '__main__':
                         [self.individuals_quantity, self.gene_quantity, self.mutation_mode, self.population_quantity])
                     Connected_Machines[machine_number]['Machine'][0].send(data_for_send.encode("utf-8"))
                 machine_number = (machine_number + 1) % machines
+            self.times += n
 
 
     individuals_quantity = int(input('how many individuals(N%2=0):'))
@@ -75,7 +78,9 @@ if __name__ == '__main__':
     population_quantity = int(input('how many iterations:'))
     GM = NetGeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction6,
                         [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
+    Started = datetime.datetime.now()
     GM.run_n_times(10)
+    print(f'global delta -{(datetime.datetime.now()-Started).microseconds / 1000} microseconds/1000')
     print(f'E={GM.return_e()}')
 
     print('Data:')
@@ -83,7 +88,7 @@ if __name__ == '__main__':
         print(f'{i} GeneticAlgorithm')
         print(f'Solution {GM.solutions[i]}')
         print(f'F={GM.solutions[i].quality}')
-        print(f'Delta {GM.deltas[i].microseconds / 1000} microseconds/1000')
+        print(f'Delta {GM.deltas[i]} microseconds/1000')
         print(f'E={GM.es[i]}')
         print('Rendering Graphs')
         GM.grs[i].open_graph()

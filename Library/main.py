@@ -44,7 +44,7 @@ class GeneticMain:
                 self.es.append(ga_graph.return_e(population))
                 ga_graph.obj = None # garbage collector should destroy ga
                 self.grs.append(ga_graph)
-                self.deltas.append(datetime.datetime.now() - Started)
+                self.deltas.append((datetime.datetime.now() - Started).microseconds / 1000)
                 break
             ga.crossover()
             ga.mutation()
