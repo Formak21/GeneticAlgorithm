@@ -10,7 +10,16 @@ import json
 
 from Library import GeneticIndividual as Gi
 from Library import GeneticAlgorithm as Ga
-from Library import ModernGraph as Mg
+from Library import EModernGraph as Mg
+from Library import main
+
+from Test_Functions import TestFunction0
+from Test_Functions import TestFunction1
+from Test_Functions import TestFunction2
+from Test_Functions import TestFunction3
+from Test_Functions import TestFunction4
+from Test_Functions import TestFunction5
+from Test_Functions import TestFunction6
 
 VERSION = "4.1.0RePy_NET"
 
@@ -62,30 +71,11 @@ if __name__ == '__main__':
             self.exec_time['Ended'] = datetime.datetime.now()
 
 
-    individuals_quantity = int(input('how many individuals:'))
+    individuals_quantity = int(input('how many individuals(N%2=0):'))
     gene_quantity = int(input('how many genes in one individual:'))
     mutation_mode = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
-    ga = NetworkGA(individuals_quantity, gene_quantity, mutation_mode, Gi.GeneticIndividual)
-    population = 0
-    ga_graph = Mg.ModernGraph(ga, population)
     population_quantity = int(input('how many iterations:'))
-    Started = datetime.datetime.now()
-
-    while True:
-        ga.quality_update()
-        ga.update_best_solution()
-        ga.selection()
-        ga_graph.add_point()
-        if population >= population_quantity:
-            print('Done!')
-            print(f'Started:{Started.strftime("%d.%m.%y-%H:%M:%S")}')
-            print(f'Ended:{datetime.datetime.now().strftime("%d.%m.%y-%H:%M:%S")}')
-            print(f'Delta seconds:{(datetime.datetime.now() - Started).seconds}')
-            print()
-            ga_graph.open_graph()
-            if not bool(int(input('Continue? 0/1:'))):
-                break
-            population_quantity += int(input(f'now {population} iterations left, how many more iterations:'))
-        ga.crossover()
-        ga.mutation()
-        population += 1
+    GM = main.GeneticMain(NetworkGA, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction0,
+                          [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
+    GM.run_n_times(10)
+    print(f'E={GM.return_e()}')

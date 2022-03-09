@@ -3,7 +3,7 @@ import math
 
 
 class EModernGraph(ModernGraph.ModernGraph):
-    def __init__(self, obj, optimum):
+    def __init__(self, optimum, obj, population=0):
         super().__init__(obj)
         self.Graphs['e_quality'] = ModernGraph.Graph.Graph('e_quality')
         self.points['e_quality'] = [] + [0] * self.population

@@ -101,3 +101,4 @@ class GeneticAlgorithm:
 
     def __str__(self):
         return '\n'.join([str(self.individuals[i]) for i in range(self.SIZE)])
+
