@@ -73,6 +73,7 @@ if __name__ == '__main__':
 
     while True:
         ga.quality_update()
+        ga.update_best_solution()
         ga.selection()
         ga_graph.add_point()
         if population >= population_quantity:
