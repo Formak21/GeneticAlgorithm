@@ -72,17 +72,6 @@ class ModernGraph:
         time.sleep(2)
         fig = px.line(self.points, y=pd.Index(['time_quality'], dtype=str))
         fig.show()
-        time.sleep(2)
-
-        fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
-
-        X = list(range(self.population))
-        Y = self.points['max_quality']
-        Z = self.points['time_quality']
-        X, Y = numpy.meshgrid(X, Y)
-        Z = X**2 + Y**2
-        surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, linewidth=0)
-        plt.show()
 
 
     def save_graph(self):
