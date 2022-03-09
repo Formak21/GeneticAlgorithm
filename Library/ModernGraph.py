@@ -61,18 +61,19 @@ class ModernGraph:
         self.Graphs['avg_quality'].add_point((self.population, self.points['avg_quality'][self.population]))
 
         self.points['time_quality'][self.population] = (
-                self.obj.exec_time['Ended'] - self.obj.exec_time['Started']).microseconds/1000
+                                                               self.obj.exec_time['Ended'] - self.obj.exec_time[
+                                                           'Started']).microseconds / 1000
         self.Graphs['time_quality'].add_point((self.population, self.points['time_quality'][self.population]))
 
         self.population += 1
 
     def open_graph(self):
-        fig = px.line(self.points, y=pd.Index([i for i in self.points.keys() if i != 'time_quality'], dtype=str))
+        fig = px.line(self.points,
+                      y=pd.Index(['avg_quality', 'max_max_quality', 'max_quality', 'min_quality'], dtype=str))
         fig.show()
         time.sleep(2)
         fig = px.line(self.points, y=pd.Index(['time_quality'], dtype=str))
         fig.show()
-
 
     def save_graph(self):
         fig = px.line(self.points, y=pd.Index(self.points.keys(), dtype=str))

@@ -1,4 +1,4 @@
-import ModernGraph
+from Library import ModernGraph
 import math
 
 

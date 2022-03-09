@@ -20,7 +20,7 @@ class GeneticMain:
     def run(self, flag):
         ga = self.GA(self.individuals_quantity, self.gene_quantity, self.mutation_mode, self.GI, self.Func.f)
         population = 0
-        ga_graph = self.GR(self.Func.f.optimal([0] * self.gene_quantity), ga, population)
+        ga_graph = self.GR(self.Func.optimal([0] * self.gene_quantity), ga, population)
         Started = datetime.datetime.now()
 
         while True:

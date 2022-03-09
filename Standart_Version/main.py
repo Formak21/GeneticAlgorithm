@@ -26,7 +26,19 @@ if __name__ == '__main__':
     gene_quantity = int(input('how many genes in one individual:'))
     mutation_mode = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
     population_quantity = int(input('how many iterations:'))
-    GM = main.GeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction0,
+    GM = main.GeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction6,
                           [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
     GM.run_n_times(10)
     print(f'E={GM.return_e()}')
+
+    print('Data:')
+    for i in range(GM.times):
+        print(f'{i} GeneticAlgorithm')
+        print(f'Solution {GM.solutions[i]}')
+        print(f'F {GM.solutions[i].quality}')
+        print(f'Delta {GM.deltas[i].microseconds / 1000} microseconds/1000')
+        print(f'E={GM.es[i]}')
+        print('Rendering Graphs')
+        GM.grs[i].open_graph()
+        if not bool(int(input('Continue? 0/1:'))):
+            break
