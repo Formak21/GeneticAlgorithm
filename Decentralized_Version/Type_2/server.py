@@ -36,7 +36,7 @@ if __name__ == '__main__':
     mutation_mode = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
     population_quantity = int(input('how many iterations:'))
     Started = datetime.datetime.now()
-    solutions = [[] * 12]
+    solutions = [[]]
 
 
     def best_solution_finder(x):
@@ -50,8 +50,8 @@ if __name__ == '__main__':
         while len(queue) or len(wait):
             if Connected_Machines[machine_number]['Status'] == 1:
                 data = json.loads(Connected_Machines[machine_number]['Machine'][0].recv(65536).decode('utf-8'))
-                solutions[k].append(Gi.GeneticIndividual(gene_quantity, data[0]))
-                solutions[k][-1].quality = data[1]
+                solutions[-1].append(Gi.GeneticIndividual(gene_quantity, data[0]))
+                solutions[-1][-1].quality = data[1]
                 wait.remove(Connected_Machines[machine_number]['Data'])
                 Connected_Machines[machine_number]['Status'] = 0
                 Connected_Machines[machine_number]['Data'] = -1
@@ -63,7 +63,9 @@ if __name__ == '__main__':
                     [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
                 Connected_Machines[machine_number]['Machine'][0].send(data_for_send.encode("utf-8"))
             machine_number = (machine_number + 1) % machines
-        solutions[k] = best_solution_finder(solutions[k])
+        solutions[-1] = best_solution_finder(solutions[-1])
+        solutions.append([])
+
     e = math.sqrt(sum([abs(i.quality - TestFunction6.optimal(i.individual))**2 for i in solutions])/len(solutions))
     print(f'global delta={(datetime.datetime.now() - Started) / datetime.timedelta(milliseconds=1)} ms')
     print(f'e={e}')
