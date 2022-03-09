@@ -15,5 +15,5 @@ connection.connect(('127.0.0.1', 25566))
 while True:
     data = connection.recv(65536).decode('utf-8')
     data = json.loads(data)
-    data = TestFunction0.f(data)
+    data = TestFunction6.f(data)
     connection.send(f'{data}'.encode('utf-8'))
