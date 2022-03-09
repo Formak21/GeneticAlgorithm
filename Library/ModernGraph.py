@@ -9,8 +9,6 @@ import numpy
 from Library import Graph
 import plotly
 import plotly.express as px
-import matplotlib.pyplot as plt
-from matplotlib import cm
 import pandas as pd
 import time
 
