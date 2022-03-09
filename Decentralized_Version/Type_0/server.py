@@ -84,7 +84,7 @@ if __name__ == '__main__':
     for i in range(GM.times):
         print(f'{i} GeneticAlgorithm')
         print(f'Solution {GM.solutions[i]}')
-        print(f'F {GM.solutions[i].quality}')
+        print(f'F={GM.solutions[i].quality}')
         print(f'Delta {GM.deltas[i].microseconds / 1000} microseconds/1000')
         print(f'E={GM.es[i]}')
         print('Rendering Graphs')
