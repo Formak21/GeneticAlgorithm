@@ -6,3 +6,7 @@ import time
 def f(n) -> float:
     time.sleep(1)
     return float(sum(n))
+
+
+def optimal(n) -> float:
+    return len(n)

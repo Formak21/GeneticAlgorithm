@@ -14,3 +14,7 @@ def f(n) -> float:
     x1 = ((int(''.join([str(i) for i in n[:len(n) // 2]]), 2) / int('1' * (len(n) // 2), 2)) * (b1 - a1)) + a1
     x2 = ((int(''.join([str(i) for i in n[len(n) // 2:]]), 2) / int('1' * (len(n) // 2), 2)) * (b2 - a2)) + a2
     return -((x1 ** 2) + (x2 ** 2))
+
+
+def optimal(n) -> float:
+    return 0.0

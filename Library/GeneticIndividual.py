@@ -13,11 +13,14 @@ VERSION = "4.1.0RePy"
 
 
 class GeneticIndividual:
-    def __init__(self, size):
+    def __init__(self, size, mass=None):
         self.SIZE = size
         self.quality = int()
-        self.individual = numpy.array([False] * self.SIZE, dtype=bool)
-        self.gen_ind()
+        if mass is None:
+            self.individual = numpy.array([False] * self.SIZE, dtype=bool)
+            self.gen_ind()
+        else:
+            self.individual = numpy.array([bool(i) for i in mass], dtype=bool)
 
     def gen_ind(self):
         for i in range(0, self.SIZE):

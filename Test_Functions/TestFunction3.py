@@ -13,3 +13,7 @@ def f(n) -> float:
         return -(1/x)
     except ZeroDivisionError:
         return 0
+
+
+def optimal(n) -> float:
+    return 0.0

@@ -26,6 +26,7 @@ class GeneticAlgorithm:
         self.selected_its = numpy.array(self.selected_its, dtype=tuple)
         self.f = f
         self.exec_time = {'Started': datetime.datetime.now(), 'Ended': datetime.datetime.now()}
+        self.best_solution = self.individuals[0]
 
     def quality_update(self):  # VERY SLOW FUNCTION, PLS DON'T CALL IT IF IT NO NEEDED
         self.exec_time['Started'] = datetime.datetime.now()
@@ -79,6 +80,17 @@ class GeneticAlgorithm:
             if quality is None or quality < self.individuals[i].quality:
                 quality = self.individuals[i].quality
         return quality
+
+    def best_per_population(self):
+        id_individual = 0
+        for i in range(self.SIZE):
+            if self.individuals[id_individual].quality < self.individuals[i].quality:
+                id_individual = i
+        return id_individual
+
+    def update_best_solution(self):
+        if self.best_solution.quality <= self.individuals[self.best_per_population()].quality:
+            self.best_solution = self.individuals[self.best_per_population()]
 
     def min_quality(self):
         quality = None
