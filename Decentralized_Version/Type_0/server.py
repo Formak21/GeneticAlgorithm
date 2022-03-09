@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    listener.bind(('127.0.0.1', 25566))
+    listener.bind(('192.168.88.246', 25566))
     listener.listen(1)
 
 
@@ -43,9 +43,6 @@ if __name__ == '__main__':
 
 
     class NetworkGA(Ga.GeneticAlgorithm):
-        def __init__(self, size, leng, m_reg, IndividualClass):
-            super(NetworkGA, self).__init__(size, leng, m_reg, IndividualClass, None)
-
         def quality_update(self):  # VERY SLOW FUNCTION, PLS DON'T CALL IT IF IT NO NEEDED
             self.exec_time['Started'] = datetime.datetime.now()
             global Connected_Machines
@@ -77,7 +74,7 @@ if __name__ == '__main__':
     population_quantity = int(input('how many iterations:'))
     GM = main.GeneticMain(NetworkGA, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction6,
                           [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
-    GM.run_n_times(10)
+    GM.run_n_times(12)
     print(f'E={GM.return_e()}')
 
     print('Data:')
