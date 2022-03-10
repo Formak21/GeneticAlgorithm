@@ -19,7 +19,7 @@ from Test_Functions import TestFunction2
 from Test_Functions import TestFunction3
 from Test_Functions import TestFunction4
 from Test_Functions import TestFunction5
-from Test_Functions import TestFunction6
+from Test_Functions import TestFunction6 as TestFunction4
 
 VERSION = "4.1.0RePy"
 
