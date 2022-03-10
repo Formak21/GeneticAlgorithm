@@ -9,6 +9,7 @@ import socket
 import json
 import math
 import random
+import sys
 
 from Test_Functions import TestFunction4
 
@@ -46,14 +47,19 @@ if __name__ == '__main__':
             individual_bank = []
             machine_bank = []
             for machine in Connected_Machines:
-                data = json.loads(machine[0].recv(65536).decode('utf-8'))
+                data = machine[0].recv(65536).decode('utf-8')
+                try:
+                    data = json.loads(data)
+                except:
+                    print(data)
+                    sys.exit()
                 if data[0] is int:
                     continue
                 else:
                     individual_bank.append(data)
                     machine_bank.append(machine)
             for machine in machine_bank:
-                data_for_send = individual_bank.pop(random.randint(0, len(individual_bank)-1))
+                data_for_send = json.dumps(individual_bank.pop(random.randint(0, len(individual_bank)-1)))
                 machine[0].send(data_for_send.encode("utf-8"))
         for machine in Connected_Machines:
             data = int(machine[0].recv(65536).decode('utf-8'))
