@@ -66,6 +66,6 @@ if __name__ == '__main__':
         solutions[-1] = best_solution_finder(solutions[-1])
         solutions.append([])
 
-    e = math.sqrt(sum([abs(i.quality - TestFunction6.optimal(i.individual))**2 for i in solutions])/len(solutions))
+    e = math.sqrt(sum([abs(i.quality - TestFunction6.optimal(i.individual))**2 for i in solutions[:-1]])/len(solutions))
     print(f'global delta={(datetime.datetime.now() - Started) / datetime.timedelta(milliseconds=1)} ms')
     print(f'e={e}')
