@@ -35,8 +35,7 @@ while True:
         else:
             connection.send(json.dumps([0, 0]).encode('utf-8'))
         if population > data[3]:
-            connection.send(
-                json.dumps([[int(i) for i in ga.best_solution.individual], ga.best_solution.quality]).encode('utf-8'))
+            connection.send(str(ga.best_solution.quality).encode('utf-8'))
             break
         ga.selection()
         ga.crossover()
