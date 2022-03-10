@@ -8,6 +8,7 @@ import datetime
 import socket
 import json
 import math
+import random
 
 from Library import GeneticIndividual as Gi
 from Test_Functions import TestFunction4
@@ -29,7 +30,7 @@ if __name__ == '__main__':
 
 
     machines = int(input('how many machines:'))
-    Connected_Machines = [{'Machine': connect_machine(i), 'Status': 0, 'Data': -1} for i in range(machines)]
+    Connected_Machines = [connect_machine(i) for i in range(machines)]
 
     individuals_quantity = int(input('how many individuals(N%2=0):'))
     gene_quantity = int(input('how many genes in one individual:'))
@@ -42,27 +43,26 @@ if __name__ == '__main__':
     def best_solution_finder(x):
         return max(x, key=lambda y: y.quality)
 
-
-    for _ in range(12):
-        queue = [i for i in range(machines)]
-        wait = []
-        machine_number = 0
-        while len(queue) or len(wait):
-            if Connected_Machines[machine_number]['Status'] == 1:
-                data = json.loads(Connected_Machines[machine_number]['Machine'][0].recv(65536).decode('utf-8'))
-                solutions[-1].append(Gi.GeneticIndividual(gene_quantity, data[0]))
-                solutions[-1][-1].quality = data[1]
-                wait.remove(Connected_Machines[machine_number]['Data'])
-                Connected_Machines[machine_number]['Status'] = 0
-                Connected_Machines[machine_number]['Data'] = -1
-            if Connected_Machines[machine_number]['Status'] == 0 and len(queue):
-                Connected_Machines[machine_number]['Status'] = 1
-                wait.append(queue.pop(0))
-                Connected_Machines[machine_number]['Data'] = wait[-1]
-                data_for_send = json.dumps(
-                    [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
-                Connected_Machines[machine_number]['Machine'][0].send(data_for_send.encode("utf-8"))
-            machine_number = (machine_number + 1) % machines
+    for machine in Connected_Machines:
+        data_for_send = json.dumps([individuals_quantity, gene_quantity, mutation_mode, population_quantity])
+        machine[0].send(data_for_send.encode("utf-8"))
+    for _ in range(population_quantity):
+        individual_bank = []
+        machine_bank = []
+        for machine in Connected_Machines:
+            data = json.loads(machine[0].recv(65536).decode('utf-8'))
+            if data[0] is int:
+                continue
+            else:
+                individual_bank.append(data)
+                machine_bank.append(machine)
+        for machine in machine_bank:
+            data_for_send = individual_bank.pop(random.randint(0, len(individual_bank)-1))
+            machine[0].send(data_for_send.encode("utf-8"))
+    for machine in Connected_Machines:
+        data = json.loads(machine[0].recv(65536).decode('utf-8'))
+        solutions[-1].append(Gi.GeneticIndividual(gene_quantity, data[0]))
+        solutions[-1][-1].quality = data[1]
         solutions[-1] = best_solution_finder(solutions[-1])
         solutions.append([])
 
