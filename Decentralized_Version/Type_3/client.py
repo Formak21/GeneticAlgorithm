@@ -22,7 +22,6 @@ while True:
     ga = Ga.GeneticAlgorithm(data[0], data[1], data[2], Gi.GeneticIndividual, TestFunction4.f)
     population = 0
     while True:
-        print(population)
         ga.quality_update()
         ga.update_best_solution()
         if random.choice([True, False]):
@@ -31,7 +30,6 @@ while True:
                             ga.individuals[ga.best_per_population()].quality]).encode('utf-8'))
             data_tmp = connection.recv(65536).decode('utf-8')
             data_tmp = json.loads(data_tmp)
-            print(data_tmp)
             data_tmp[0] = Gi.GeneticIndividual(data[1], data_tmp[0])
             data_tmp[0].quality = data_tmp[1]
             ga.individuals[ga.best_per_population()] = data_tmp[0]
