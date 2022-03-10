@@ -26,7 +26,7 @@ if __name__ == '__main__':
     gene_quantity = int(input('how many genes in one individual:'))
     mutation_mode = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
     population_quantity = int(input('how many iterations:'))
-    GM = main.GeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction6,
+    GM = main.GeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction4,
                           [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
     Started = datetime.datetime.now()
     GM.run_n_times(12)

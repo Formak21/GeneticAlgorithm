@@ -19,7 +19,7 @@ connection.connect(('192.168.88.246', 25566))
 while True:
     data = connection.recv(65536).decode('utf-8')
     data = json.loads(data)
-    GM = main.GeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction6, data)
+    GM = main.GeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction4, data)
     GM.run(False)
     Data1 = [[int(i) for i in GM.solutions[0].individual], GM.solutions[0].quality,
              GM.deltas[0], GM.es[0]]

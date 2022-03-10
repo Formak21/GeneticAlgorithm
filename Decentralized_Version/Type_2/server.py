@@ -10,7 +10,7 @@ import json
 import math
 
 from Library import GeneticIndividual as Gi
-from Test_Functions import TestFunction6
+from Test_Functions import TestFunction4
 
 VERSION = "4.1.0RePy"
 
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         return max(x, key=lambda y: y.quality)
 
 
-    for k in range(12):
+    for _ in range(12):
         queue = [i for i in range(machines)]
         wait = []
         machine_number = 0
@@ -66,6 +66,6 @@ if __name__ == '__main__':
         solutions[-1] = best_solution_finder(solutions[-1])
         solutions.append([])
 
-    e = math.sqrt(sum([abs(i.quality - TestFunction6.optimal(i.individual))**2 for i in solutions[:-1]])/len(solutions))
+    e = math.sqrt(sum([abs(i.quality - TestFunction4.optimal(i.individual))**2 for i in solutions[:-1]])/len(solutions))
     print(f'global delta={(datetime.datetime.now() - Started) / datetime.timedelta(milliseconds=1)} ms')
     print(f'e={e}')

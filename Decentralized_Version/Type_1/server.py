@@ -76,11 +76,11 @@ if __name__ == '__main__':
     gene_quantity = int(input('how many genes in one individual:'))
     mutation_mode = input('mutation mode(WEAK/NORMAL/STRONG/NULL):')
     population_quantity = int(input('how many iterations:'))
-    GM = NetGeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction6,
+    GM = NetGeneticMain(Ga.GeneticAlgorithm, Gi.GeneticIndividual, Mg.EModernGraph, TestFunction4,
                         [individuals_quantity, gene_quantity, mutation_mode, population_quantity])
     Started = datetime.datetime.now()
     GM.run_n_times(12)
-    print(f'global delta ={(datetime.datetime.now() - Started)/ datetime.timedelta(milliseconds=1)} microseconds/1000')
+    print(f'global delta ={(datetime.datetime.now() - Started)/ datetime.timedelta(milliseconds=1)} millisec')
     print(f'E={GM.return_e()}')
 
     print('Data:')
