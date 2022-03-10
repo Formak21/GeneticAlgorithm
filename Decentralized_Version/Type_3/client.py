@@ -1,6 +1,7 @@
 import random
 import socket
 import json
+import sys
 
 from Library import GeneticIndividual as Gi
 from Library import GeneticAlgorithm as Ga
@@ -27,7 +28,8 @@ while True:
             connection.send(
                 json.dumps([[int(i) for i in ga.individuals[ga.best_per_population()].individual],
                             ga.individuals[ga.best_per_population()].quality]).encode('utf-8'))
-            data_tmp = json.loads(connection.recv(65536).decode('utf-8'))
+            data_tmp = connection.recv(65536).decode('utf-8')
+            data_tmp = json.loads(data_tmp)
             data_tmp[0] = Gi.GeneticIndividual(data[1], data_tmp[0])
             data_tmp[0].quality = data_tmp[1]
             ga.individuals[ga.best_per_population()] = data_tmp[0]
