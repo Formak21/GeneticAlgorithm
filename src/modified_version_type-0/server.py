@@ -11,18 +11,18 @@ from lib.functions import test_function_6 as test_function
 # Network
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-listener.bind(('192.168.88.246', 25566))
+listener.bind(('127.0.0.1', 25566))
 listener.listen(1)
 
 
 def connect_machine(n):
     print(f'Waiting for machine no{n}...')
-    machine = listener.accept()
+    machine_t = listener.accept()
     print(f'Machine No{n} Successfully connected. ')
-    return machine
+    return machine_t
 
 
-machines = int(input('how many machines:'))
+machines = int(input('Machines quantity='))
 Connected_Machines = [{'Machine': connect_machine(i), 'Status': 0, 'Data': -1} for i in range(machines)]
 
 

@@ -9,7 +9,7 @@ from lib.functions import test_function_6 as test_function
 # Network
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-listener.bind(('192.168.88.246', 25566))
+listener.bind(('127.0.0.1', 25566))
 listener.listen(1)
 
 
