@@ -2,7 +2,7 @@ import socket
 import json
 import sys
 
-from lib.functions import test_function_0 as test_function
+from lib.functions import test_function_himmelblau as test_function
 
 # Network
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
