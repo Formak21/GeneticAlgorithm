@@ -36,7 +36,7 @@ class NetworkGA(Ga.GeneticAlgorithm):
         while len(queue) or len(wait):
             if Connected_Machines[machine_number]['Status'] == 1:
                 self.individuals[Connected_Machines[machine_number]['Data']].quality = float(
-                    Connected_Machines[machine_number]['Machine'][0].recv(32768).decode('utf-8'))
+                    Connected_Machines[machine_number]['Machine'][0].recv(65535).decode('utf-8'))
                 wait.remove(Connected_Machines[machine_number]['Data'])
                 Connected_Machines[machine_number]['Status'] = 0
                 Connected_Machines[machine_number]['Data'] = -1
