@@ -62,7 +62,6 @@ for __ in range(test_quantity):
 
     for machine in Connected_Machines:
         data = float(machine[0].recv(65536).decode('utf-8'))
-        machine[0].send('exit'.encode("utf-8"))
         solutions[-1].append(data)
     solutions[-1] = max(solutions[-1])
     solutions.append([])
@@ -70,3 +69,5 @@ for __ in range(test_quantity):
 e = math.sqrt(sum([abs(i - test_function.optimal([0] * gene_quantity)) ** 2 for i in solutions[:-1]]) / len(solutions))
 print(f'delta={(datetime.datetime.now() - started) / datetime.timedelta(milliseconds=1)} ms')
 print(f'e={e}')
+for i in Connected_Machines:
+    i[0].send('exit'.encode('utf-8'))

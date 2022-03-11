@@ -37,6 +37,7 @@ for machine in Connected_Machines:
 
 for machine in Connected_Machines:
     data = float(machine[0].recv(65536).decode('utf-8'))
+    machine[0].send('exit'.encode('utf-8'))
     solutions.append(data)
 
 e = math.sqrt(sum([abs(i - test_function.optimal([0] * gene_quantity)) ** 2 for i in solutions[:-1]]) / len(solutions))
