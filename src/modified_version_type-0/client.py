@@ -10,8 +10,6 @@ connection.connect(('192.168.88.246', 25566))
 
 while True:
     data = connection.recv(65536).decode('utf-8')
-    if data == 'exit':
-        sys.exit()
     data = json.loads(data)
     data = test_function.f(data)
-    connection.send(str(data).encode('utf-8'))
+    connection.send(f'{data}'.encode('utf-8'))
