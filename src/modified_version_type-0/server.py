@@ -6,7 +6,7 @@ import math
 from lib import GeneticIndividual as Gi
 from lib import GeneticAlgorithm as Ga
 
-from lib.functions import test_function_6 as test_function
+from lib.functions import test_function_himmelblau as test_function
 
 # Network
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
