@@ -3,27 +3,30 @@ import socket
 import json
 import sys
 
-from Library import GeneticIndividual as Gi
-from Library import GeneticAlgorithm as Ga
+from lib import GeneticIndividual as Gi
+from lib import GeneticAlgorithm as Ga
 
-from Test_Functions import TestFunction0
-from Test_Functions import TestFunction1
-from Test_Functions import TestFunction2
-from Test_Functions import TestFunction3
-from Test_Functions import TestFunction4
-from Test_Functions import TestFunction5
-from Test_Functions import TestFunction6 as TestFunction4
+from lib.functions import test_function_0 as test_function
 
+# Network
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connection.connect(('192.168.88.246', 25566))
+
 while True:
+    # Get parameters
     data = connection.recv(65536).decode('utf-8')
+    if data == 'exit':
+        sys.exit()
     data = json.loads(data)
-    ga = Ga.GeneticAlgorithm(data[0], data[1], data[2], Gi.GeneticIndividual, TestFunction4.f)
+
+    # Set up Genetic Algorithm
+    ga = Ga.GeneticAlgorithm(data[0], data[1], data[2], Gi.GeneticIndividual, test_function.f)
     population = 0
     while True:
         ga.quality_update()
         ga.update_best_solution()
+
+        # Modification
         if random.choice([True, False]):
             connection.send(
                 json.dumps([[int(i) for i in ga.individuals[ga.best_per_population()].individual],
@@ -37,7 +40,9 @@ while True:
         else:
             connection.send(json.dumps([0, 0]).encode('utf-8'))
             connection.recv(500)
-        if population > data[3]:
+        # End of Modification
+
+        if population >= data[3]:
             connection.send(str(ga.best_solution.quality).encode('utf-8'))
             break
         ga.selection()
