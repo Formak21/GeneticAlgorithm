@@ -4,7 +4,7 @@ import json
 import math
 import random
 
-from lib.functions import test_function_himmelblau as test_function
+from lib.functions import test_function_6 as test_function
 
 # Network
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
