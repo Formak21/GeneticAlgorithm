@@ -3,7 +3,7 @@ import socket
 import json
 import math
 
-from lib.functions import test_function_himmelblau as test_function
+from lib.functions import test_function_shekelsfoxholes as test_function
 
 # Network
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -41,5 +41,5 @@ for machine in Connected_Machines:
     solutions.append(data)
 
 e = math.sqrt(sum([abs(i - test_function.optimal([0] * gene_quantity)) ** 2 for i in solutions[:-1]]) / len(solutions))
+print(f'E={e}')
 print(f'delta={(datetime.datetime.now() - started) / datetime.timedelta(milliseconds=1)} ms')
-print(f'e={e}')
