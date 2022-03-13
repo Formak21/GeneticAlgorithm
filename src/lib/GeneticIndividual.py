@@ -9,7 +9,6 @@ import random
 import numpy
 import copy
 
-VERSION = "4.1.0RePy"
 
 
 class GeneticIndividual:
