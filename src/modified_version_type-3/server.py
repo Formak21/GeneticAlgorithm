@@ -4,7 +4,7 @@ import json
 import math
 import random
 
-from lib.functions import test_function_shekelsfoxholes as test_function
+from lib.functions import test_function_5 as test_function
 
 # Network
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -66,7 +66,7 @@ for __ in range(test_quantity):
     solutions[-1] = max(solutions[-1])
     solutions.append([])
 
-e = math.sqrt(sum([abs(i - test_function.optimal([0] * gene_quantity)) ** 2 for i in solutions[:-1]]) / len(solutions))
+e = math.sqrt(sum([abs(i - test_function.optimal([0] * gene_quantity)) ** 2 for i in solutions[:-1]]) / len(solutions[:-1]))
 print(f'E={e}')
 print(f'delta={(datetime.datetime.now() - started) / datetime.timedelta(milliseconds=1)} ms')
 for i in Connected_Machines:

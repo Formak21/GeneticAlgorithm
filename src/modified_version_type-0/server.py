@@ -6,7 +6,7 @@ import math
 from lib import GeneticIndividual as Gi
 from lib import GeneticAlgorithm as Ga
 
-from lib.functions import test_function_shekelsfoxholes as test_function
+from lib.functions import test_function_5 as test_function
 
 # Network
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -76,7 +76,7 @@ for __ in range(test_quantity):
         ga.mutation()
         population += 1
 
-e = math.sqrt(sum([abs(i - test_function.optimal([0] * gene_quantity)) ** 2 for i in solutions[:-1]]) / len(solutions))
+e = math.sqrt(sum([abs(i - test_function.optimal([0] * gene_quantity)) ** 2 for i in solutions]) / len(solutions))
 print(f'E={e}')
 print(f'delta={(datetime.datetime.now() - started) / datetime.timedelta(milliseconds=1)} ms')
 

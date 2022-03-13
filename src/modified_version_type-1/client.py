@@ -4,7 +4,7 @@ import json
 from lib import GeneticIndividual as Gi
 from lib import GeneticAlgorithm as Ga
 
-from lib.functions import test_function_shekelsfoxholes as test_function
+from lib.functions import test_function_5 as test_function
 
 # Network
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
