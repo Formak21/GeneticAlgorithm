@@ -4,7 +4,7 @@ import math
 from lib import GeneticIndividual as Gi
 from lib import GeneticAlgorithm as Ga
 
-from lib.functions import test_function_5 as test_function
+from lib.functions import test_function_7 as test_function
 
 # Genetic Algorithm Parameters
 test_quantity = int(input('Test quantity='))
@@ -23,6 +23,7 @@ for __ in range(test_quantity):
         ga.update_best_solution()
         if population >= population_quantity:
             solutions.append(ga.best_solution.quality)
+            test_function.f(list(str(ga.best_solution)), True)
             break
         ga.selection()
         ga.crossover()
